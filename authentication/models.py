@@ -24,7 +24,6 @@ class User(AbstractBaseUser):
         (1, 'management'),
         (2, 'support'),
         (3, 'sales'),
-        (4, 'admin'),
     )
     user_team = models.PositiveSmallIntegerField(choices=USER_TEAM_CHOICES, default=1)
     first_name = models.CharField(max_length=25, verbose_name="First Name")
@@ -32,7 +31,7 @@ class User(AbstractBaseUser):
     email = models.EmailField(unique=True, max_length=100, verbose_name="E-Mail")
 
     is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
@@ -45,3 +44,4 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+
