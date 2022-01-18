@@ -25,7 +25,7 @@ class User(AbstractBaseUser):
         (2, 'support'),
         (3, 'sales'),
     )
-    user_team = models.PositiveSmallIntegerField(choices=USER_TEAM_CHOICES, default=1)
+    user_team = models.PositiveSmallIntegerField(choices=USER_TEAM_CHOICES, verbose_name="Team")
     first_name = models.CharField(max_length=25, verbose_name="First Name")
     last_name = models.CharField(max_length=25, verbose_name="Last Name")
     email = models.EmailField(unique=True, max_length=100, verbose_name="E-Mail")
@@ -44,4 +44,3 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
-
