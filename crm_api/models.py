@@ -21,8 +21,6 @@ class Client(models.Model):
     company = models.ForeignKey(to=Company, on_delete=models.RESTRICT)
     date_created = models.DateTimeField(auto_now_add=True, verbose_name='Date Created')
     date_updated = models.DateTimeField(auto_now=True, verbose_name='Date Updated')
-    sales_contact = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True,
-                                      blank=True, limit_choices_to={'user_team': 3})
 
     class Meta:
         verbose_name = "Client"
@@ -37,7 +35,10 @@ class Contract(models.Model):
     date_updated = models.DateTimeField(auto_now=True, verbose_name='Date Updated')
     status = models.BooleanField(default=False, verbose_name="Active contract")
     amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, verbose_name="Amount")
-    payment_due = models.DateTimeField(blank=True, null=True)
+    payment_due = models.DateTimeField(blank=True, null=True, verbose_name="Payment Due")
+    sales_contact = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True,
+                                      blank=True, limit_choices_to={'user_team': 3})
+    client = models.ForeignKey(to=Client, on_delete=models.RESTRICT)
 
     class Meta:
         verbose_name = "Contract"
@@ -54,5 +55,15 @@ class Event(models.Model):
 
     )
     status = models.PositiveSmallIntegerField(choices=CHOICES_STATUS, verbose_name="Status")
-    contract = models.ForeignKey(to=Contract, on_delete=models.RESTRICT)
+    contract = models.OneToOneField(to=Contract, on_delete=models.RESTRICT)
+    support_contact = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True,
+                                        blank=True, limit_choices_to={'user_team': 2})
+    date_created = models.DateTimeField(auto_now_add=True, verbose_name='Date Created')
+    date_updated = models.DateTimeField(auto_now=True, verbose_name='Date Updated')
+    event_date = models.DateTimeField(blank=True, null=True, verbose_name="Date of the Event")
+    attendees = models.IntegerField(blank=True, null=True, verbose_name="Number of attendees")
+    note = models.TextField(blank=True, verbose_name="Notes")
+
+    class Meta:
+        verbose_name = "Event"
 
