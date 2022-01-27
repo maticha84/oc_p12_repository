@@ -6,8 +6,9 @@ class ManageUser(BaseUserManager):
     def create_user(self, email, password=None, **kwargs):
         if not email:
             raise ValueError("Email is missing")
+        user = self.model(
+            email=self.normalize_email(email))
 
-        user = self.model(email=self.normalize_email(email))
         user.set_password(password)
         user.save()
         return user
@@ -31,7 +32,7 @@ class User(AbstractBaseUser):
     email = models.EmailField(unique=True, max_length=100, verbose_name="E-Mail")
 
     is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'

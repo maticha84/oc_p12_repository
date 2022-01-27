@@ -30,6 +30,8 @@ class UserCreationForm(forms.ModelForm):
         # Save the provided password in hashed format
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password"])
+        if user.user_team == 1:
+            user.is_staff=True
         if commit:
             user.save()
         return user
@@ -44,8 +46,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'password', 'first_name', 'last_name', 'user_team',
-                  'is_staff', 'is_active', 'is_admin')
+        fields = ('email', 'password', 'first_name', 'last_name', 'user_team')
 
 
 @admin.register(User)
@@ -63,7 +64,7 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name')}),
-        ('Permissions', {'fields': ('user_team', 'is_staff', 'is_admin',)}),
+        ('Permissions', {'fields': ('user_team',)}),
     )
 
     add_fieldsets = (

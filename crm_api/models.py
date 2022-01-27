@@ -18,7 +18,7 @@ class Client(models.Model):
     email = models.EmailField(max_length=100, verbose_name='E-Mail', unique=True)
     phone = models.CharField(max_length=20, verbose_name="Phone Number")
     mobile = models.CharField(max_length=20, verbose_name="Mobile Number")
-    company = models.ForeignKey(to=Company, on_delete=models.RESTRICT)
+    company = models.ForeignKey(to=Company, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True, verbose_name='Date Created')
     date_updated = models.DateTimeField(auto_now=True, verbose_name='Date Updated')
 
@@ -38,7 +38,7 @@ class Contract(models.Model):
     payment_due = models.DateTimeField(blank=True, null=True, verbose_name="Payment Due")
     sales_contact = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True,
                                       blank=True, limit_choices_to={'user_team': 3})
-    client = models.ForeignKey(to=Client, on_delete=models.RESTRICT)
+    client = models.ForeignKey(to=Client, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "Contract"
@@ -55,7 +55,7 @@ class Event(models.Model):
 
     )
     status = models.PositiveSmallIntegerField(choices=CHOICES_STATUS, verbose_name="Status")
-    contract = models.OneToOneField(to=Contract, on_delete=models.RESTRICT)
+    contract = models.OneToOneField(to=Contract, on_delete=models.CASCADE)
     support_contact = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True,
                                         blank=True, limit_choices_to={'user_team': 2})
     date_created = models.DateTimeField(auto_now_add=True, verbose_name='Date Created')
