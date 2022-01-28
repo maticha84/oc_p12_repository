@@ -1,3 +1,15 @@
 from django.shortcuts import render
+from rest_framework.viewsets import ModelViewSet
+from .serializers import ClientSerializer, ContractSerializer, EventSerializer
 
-# Create your views here.
+
+class ClientViewset(ModelViewSet):
+    pass
+
+
+class ContractViewset(ModelViewSet):
+    pass
+
+
+class EventViewset(ModelViewSet):
+    pass
