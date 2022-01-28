@@ -31,7 +31,8 @@ class UserCreationForm(forms.ModelForm):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password"])
         if user.user_team == 1:
-            user.is_staff=True
+            user.is_staff = True
+            user.is_admin = True
         if commit:
             user.save()
         return user
@@ -70,12 +71,35 @@ class UserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'first_name','last_name', 'user_team', 'password', 'password2'),
+            'fields': ('email', 'first_name', 'last_name', 'user_team', 'password', 'password2'),
         }),
     )
     search_fields = ('email',)
     ordering = ('email',)
     filter_horizontal = ()
+
+    def has_view_permission(self, request, obj=None):
+        if request.user.user_team == 1:
+            return True
+        return False
+
+    # Si seulement has_view, les users restes visibles car supposés
+    # modifiables et autres
+
+    def has_add_permission(self, request, obj=None):
+        if request.user.user_team == 1:
+            return True
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        if request.user.user_team == 1:
+            return True
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        if request.user.user_team == 1:
+            return True
+        return False
 
 
 admin.site.unregister(Group)
