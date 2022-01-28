@@ -1,5 +1,5 @@
-from rest_framework.serializers import ModelSerializer, ValidationError
-
+from rest_framework.serializers import ModelSerializer, ValidationError, CharField
+from django.contrib.auth import password_validation
 from .models import User
 
 
@@ -28,7 +28,7 @@ class RegistrationSerializer(ModelSerializer):
             first_name=self.validated_data['first_name'],
             last_name=self.validated_data['last_name'],
             email=self.validated_data['email'],
-            user_team=self.validate_data['user_team'],
+            user_team=self.validated_data['user_team'],
         )
 
         password = self.validated_data['password']
