@@ -6,7 +6,10 @@ from authentication.models import User
 
 # Create your models here.
 class Company(models.Model):
-    name = models.CharField(max_length=250, verbose_name="Company Name")
+    name = models.CharField(max_length=250, verbose_name="Company Name", blank=False)
+
+    class Meta:
+        verbose_name = "Company"
 
     def __str__(self):
         return self.name
@@ -25,9 +28,6 @@ class Client(models.Model):
     class Meta:
         verbose_name = "Client"
         ordering = ["company"]
-
-    def __str__(self):
-        return self.company_name
 
 
 class Contract(models.Model):
@@ -66,4 +66,3 @@ class Event(models.Model):
 
     class Meta:
         verbose_name = "Event"
-

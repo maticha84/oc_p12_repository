@@ -10,7 +10,8 @@ class CompanySerializer(ModelSerializer):
 
     def validate_name(self, value):
         if Company.objects.filter(name__iexact=value).exists():
-            raise ValidationError({'Company': f'This company name: {value} already exists'})
+            raise ValidationError({'Company': f'This company name: "{value}" already exists'})
+        return value
 
 
 class ClientSerializer(ModelSerializer):
