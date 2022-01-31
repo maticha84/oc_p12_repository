@@ -12,7 +12,7 @@ router_contract = routers.SimpleRouter()
 router_contract.register('contracts', ContractViewset, basename='contracts')
 
 router_event = routers.SimpleRouter()
-router_event.register('event', EventViewset, basename='event')
+router_event.register('events', EventViewset, basename='events')
 
 urlpatterns = [
     path('', include(router_client.urls)),
