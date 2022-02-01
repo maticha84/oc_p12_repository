@@ -17,13 +17,23 @@ class CompanySerializer(ModelSerializer):
 class ClientSerializer(ModelSerializer):
     class Meta:
         model = Client
-        fields = ['first_name', 'last_name', 'email', 'phone', 'mobile', 'date_created', 'date_updated']
+        fields = ['first_name', 'last_name', 'email', 'phone', 'mobile', 'date_created', 'date_updated', 'company']
 
     def validate_email(self, value):
         if Client.objects.filter(email=value).exists():
             raise ValidationError({'E-mail Error': f'This client e-mail: {value} already exists'})
         return value
 
+
+class ClientPartialSerializer(ModelSerializer):
+    class Meta:
+        model = Client
+        fields = ['first_name', 'last_name', 'email', 'phone', 'mobile', 'date_created', 'date_updated']
+
+    def validate_email(self, value):
+        if Client.objects.filter(email=value).exists():
+            raise ValidationError({'E-mail Error': f'This client e-mail: {value} already exists'})
+        return value
 
 class ContractSerializer(ModelSerializer):
     class Meta:

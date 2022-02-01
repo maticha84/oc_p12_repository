@@ -6,7 +6,7 @@ from authentication.models import User
 
 # Create your models here.
 class Company(models.Model):
-    name = models.CharField(max_length=250, verbose_name="Company Name", blank=False)
+    name = models.CharField(max_length=250, verbose_name="Company Name", blank=False, unique=True)
 
     class Meta:
         verbose_name = "Company"
