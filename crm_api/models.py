@@ -6,7 +6,7 @@ from authentication.models import User
 
 # Create your models here.
 class Company(models.Model):
-    name = models.CharField(max_length=250, verbose_name="Company Name", blank=False, unique=True)
+    name = models.CharField(max_length=250, verbose_name="Company Name", unique=True)
 
     class Meta:
         verbose_name = "Company"
@@ -21,7 +21,7 @@ class Client(models.Model):
     email = models.EmailField(max_length=100, verbose_name='E-Mail', unique=True)
     phone = models.CharField(max_length=20, verbose_name="Phone Number")
     mobile = models.CharField(max_length=20, verbose_name="Mobile Number")
-    company = models.ForeignKey(to=Company, on_delete=models.RESTRICT)
+    company = models.ForeignKey(to=Company, on_delete=models.RESTRICT, related_name='client_company')
     date_created = models.DateTimeField(auto_now_add=True, verbose_name='Date Created')
     date_updated = models.DateTimeField(auto_now=True, verbose_name='Date Updated')
 

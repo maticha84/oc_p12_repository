@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer, ValidationError
+from rest_framework.serializers import ModelSerializer, ValidationError, SerializerMethodField
 
 from .models import Company, Client, Contract, Event
 
@@ -15,9 +15,17 @@ class CompanySerializer(ModelSerializer):
 
 
 class ClientSerializer(ModelSerializer):
+    client_company = SerializerMethodField()
+
     class Meta:
         model = Client
-        fields = ['first_name', 'last_name', 'email', 'phone', 'mobile', 'date_created', 'date_updated', 'company']
+        fields = ['first_name', 'last_name', 'email', 'phone', 'mobile', 'date_created', 'date_updated',
+                  'client_company']
+
+    def get_client_company(self, instance):
+        queryset = instance.company
+        serializer = CompanySerializer(queryset)
+        return serializer.data
 
     def validate_email(self, value):
         if Client.objects.filter(email=value).exists():
@@ -34,6 +42,7 @@ class ClientPartialSerializer(ModelSerializer):
         if Client.objects.filter(email=value).exists():
             raise ValidationError({'E-mail Error': f'This client e-mail: {value} already exists'})
         return value
+
 
 class ContractSerializer(ModelSerializer):
     class Meta:

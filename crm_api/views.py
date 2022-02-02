@@ -93,33 +93,13 @@ class ClientViewset(ModelViewSet):
         return clients
 
     def create(self, request, *args, **kwargs):
+        pass
 
-        client_data = request.data
-        serializer = ClientPartialSerializer(data=client_data)
+    def update(self, request, *args, **kwargs):
+        pass
 
-        if serializer.is_valid():
-            company = Company.objects.filter(name__iexact=client_data['company'])
-            if not company:
-                return Response(
-                    {"Company": f"This company : '{client_data['company']}' doesn't exist in the base. "
-                                f"Please create the company before client."},
-                    status=status.HTTP_404_NOT_FOUND)
-
-            company = company.get()
-            data = {
-                'first_name': client_data['first_name'],
-                'last_name': client_data['last_name'],
-                'email': client_data['email'],
-                'phone': client_data['phone'],
-                'mobile': client_data['mobile'],
-                'company': company.id
-            }
-
-            serializer = ClientSerializer(data=data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def destroy(self, request, *args, **kwargs):
+        pass
 
 
 class ContractViewset(ModelViewSet):
