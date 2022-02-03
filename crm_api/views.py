@@ -9,7 +9,7 @@ from .serializers import (
     ContractSerializer,
     EventSerializer,
     CompanySerializer,
-    ClientPartialSerializer
+    ClientListSerializer
 )
 from .permissions import IsAuthenticated, IsClientView
 from .models import Client, Contract, Event, Company
@@ -83,7 +83,7 @@ class CompanyViewset(ModelViewSet):
 
 
 class ClientViewset(ModelViewSet):
-    serializer_class = ClientSerializer
+    serializer_class = ClientListSerializer
     permission_classes = (IsAuthenticated, IsClientView)
 
     def get_queryset(self):
@@ -93,7 +93,29 @@ class ClientViewset(ModelViewSet):
         return clients
 
     def create(self, request, *args, **kwargs):
-        pass
+        client_data = request.data
+        company = Company.objects.filter(name__iexact=client_data['company'])
+        if not company:
+            return Response({"Company": f"Company '{client_data['company']}"},
+                            status=status.HTTP_404_NOT_FOUND)
+        company = company.get()
+        company_id = company.id
+        data = {
+            'first_name': client_data['first_name'],
+            'last_name': client_data['last_name'],
+            'email': client_data['email'],
+            'phone': client_data['phone'],
+            'mobile': client_data['mobile'],
+            'company': company_id
+        }
+        client_serializer = ClientSerializer(data=data)
+        if client_serializer.is_valid():
+
+            client = client_serializer.save()
+
+            return Response(client_serializer.data)
+        return Response(client_serializer.errors)
+
 
     def update(self, request, *args, **kwargs):
         pass

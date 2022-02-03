@@ -4,7 +4,6 @@ from epicevents import settings
 from authentication.models import User
 
 
-# Create your models here.
 class Company(models.Model):
     name = models.CharField(max_length=250, verbose_name="Company Name", unique=True)
 
