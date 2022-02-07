@@ -64,7 +64,7 @@ class IsSalesTeam(BasePermission):
             return True
 
 
-class IsClientView(BasePermission):
+class IsSalesView(BasePermission):
 
     message = "You are not a member of the sales team. You do not have access authorization."
 
@@ -74,8 +74,12 @@ class IsClientView(BasePermission):
 
         if view.action in ['list', 'retrieve']:
             return True
-        elif view.action in ['create', 'update', 'destroy']:
+        elif view.action in ['create', 'destroy']:
             if not team == 3:
                 return False
             return True
 
+        elif view.action in ['update']:
+            if team == 1 or team == 3:
+                return True
+            return False
