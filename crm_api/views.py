@@ -87,6 +87,7 @@ class CompanyViewset(ModelViewSet):
 class ClientViewset(ModelViewSet):
     serializer_class = ClientListSerializer
     permission_classes = (IsAuthenticated, IsSalesView)
+    http_method_names = ['get', 'retrieve', ]
 
     def get_queryset(self):
         user = self.request.user
@@ -94,30 +95,44 @@ class ClientViewset(ModelViewSet):
 
         return clients
 
+
+class ClientByCompanyViewset(ModelViewSet):
+    serializer_class = ClientListSerializer
+    permission_classes = (IsAuthenticated, IsSalesView)
+
+    def get_queryset(self):
+        user = self.request.user
+        clients = Client.objects.filter(company_id=self.kwargs['company_id'])
+
+        return clients
+
     def create(self, request, *args, **kwargs):
         client_data = request.data
-        company = Company.objects.filter(name__iexact=client_data['company'])
+
+        company = Company.objects.filter(id=kwargs['company_id'])
         if not company:
-            return Response({"Company": f"Company '{client_data['company']} dosen't exist. "
+            return Response({"Company": f"Company '{kwargs['company_id']}' dosen't exist. "
                                         f"Please create this company before the client"},
                             status=status.HTTP_404_NOT_FOUND)
         company = company.get()
-        company_id = company.id
-        data = {
-            'first_name': client_data['first_name'],
-            'last_name': client_data['last_name'],
-            'email': client_data['email'],
-            'phone': client_data['phone'],
-            'mobile': client_data['mobile'],
-            'company': company_id,
-            'sales_contact': request.user.id
-        }
-        client_serializer = ClientSerializer(data=data)
 
+        client_serializer = ClientSerializer(data=client_data, partial=True)
         if client_serializer.is_valid():
-            client = client_serializer.save()
+            data = {
+                'first_name': client_data['first_name'],
+                'last_name': client_data['last_name'],
+                'email': client_data['email'],
+                'phone': client_data['phone'],
+                'mobile': client_data['mobile'],
+                'company': company.id,
+                'sales_contact': request.user.id
+            }
 
-            return Response(client_serializer.data)
+            client_serializer = ClientSerializer(data=data)
+            if client_serializer.is_valid():
+                client = client_serializer.save()
+                return Response(client_serializer.data)
+            return Response(client_serializer.errors)
         return Response(client_serializer.errors)
 
     def update(self, request, *args, **kwargs):
@@ -129,7 +144,7 @@ class ClientViewset(ModelViewSet):
                                        f"You can't update this"},
                             status=status.HTTP_404_NOT_FOUND)
         client_to_modify = client_to_modify.get()
-        if user.user_team == 3 and user.id != client_to_modify.sales_contact.id :
+        if user.user_team == 3 and user.id != client_to_modify.sales_contact.id:
             return Response({"Sales User": f"You are not responsible for this client. You cannot change it"},
                             status=status.HTTP_403_FORBIDDEN)
         data = {}
@@ -139,19 +154,10 @@ class ClientViewset(ModelViewSet):
             if data['email'] == client_to_modify.email:
                 del data['email']
 
-        if 'company' in data:
-            company = Company.objects.filter(name__iexact=data['company'])
-            if not company:
-                return Response({"Company": f"Company '{data['company']} doesn't exist. "
-                                            f"Please create this company before the client"},
-                                status=status.HTTP_404_NOT_FOUND)
-            company = company.get()
-            data['company'] = company.id
-            client_to_modify.company = company
-        else:
-            data['company'] = client_to_modify.company.id
-
         if 'sales_contact' in data:
+            if user.user_team == 3:
+                return Response({"Sales User": f"You are not allowed to change the customer's sales manager"},
+                                status=status.HTTP_403_FORBIDDEN)
             sales_contact = User.objects.filter(email=data['sales_contact'], user_team=3)
             if not sales_contact:
                 return Response({"Sales Contact": f"Sales contact {data['sales_contact']} in not available."},
@@ -161,6 +167,8 @@ class ClientViewset(ModelViewSet):
             client_to_modify.sales_contact = sales_contact
         else:
             data['sales_contact'] = client_to_modify.sales_contact.id
+
+        data['company'] = kwargs['company_id']
 
         serializer = ClientSerializer(data=data, partial=True)
         if serializer.is_valid():
@@ -192,8 +200,8 @@ class ClientViewset(ModelViewSet):
                             status=status.HTTP_404_NOT_FOUND)
 
         client_to_destroy = client_to_destroy.get()
-        if user.user_team == 3 and user.id != client_to_destroy.sales_contact.id :
-            return Response({"Sales User": f"You are not responsible for this client. You cannot change it"},
+        if user.user_team == 3 and user.id != client_to_destroy.sales_contact.id:
+            return Response({"Sales User": f"You are not responsible for this client. You cannot delete it"},
                             status=status.HTTP_403_FORBIDDEN)
         try:
             client_to_destroy.delete()
@@ -212,6 +220,7 @@ class ClientViewset(ModelViewSet):
 class ContractViewset(ModelViewSet):
     serializer_class = ContractListSerializer
     permission_classes = (IsAuthenticated, IsSalesView)
+    http_method_names = ['get', 'retrieve', ]
 
     def get_queryset(self):
         user = self.request.user
@@ -219,6 +228,16 @@ class ContractViewset(ModelViewSet):
 
         return contracts
 
+
+class ContractByClientViewset(ModelViewSet):
+    serializer_class = ContractListSerializer
+    permission_classes = (IsAuthenticated, IsSalesView)
+
+    def get_queryset(self):
+        user = self.request.user
+        contracts = Contract.objects.filter(client_id=self.kwargs['client_id'])
+
+        return contracts
 
 
 class EventViewset(ModelViewSet):

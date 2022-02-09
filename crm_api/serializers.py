@@ -1,8 +1,8 @@
 from rest_framework.serializers import ModelSerializer, ValidationError, SerializerMethodField
 
-
 from .models import Company, Client, Contract, Event
 from authentication.serializers import UserSerializer
+
 
 class CompanySerializer(ModelSerializer):
     class Meta:
@@ -16,12 +16,10 @@ class CompanySerializer(ModelSerializer):
 
 
 class ClientSerializer(ModelSerializer):
-
     class Meta:
         model = Client
         fields = ['first_name', 'last_name', 'email', 'phone', 'mobile', 'date_created', 'date_updated',
                   'company', 'sales_contact']
-
 
     def validate_email(self, value):
         if Client.objects.filter(email=value).exists():
@@ -76,7 +74,8 @@ class ContractListSerializer(ModelSerializer):
 
     class Meta:
         model = Client
-        fields = ['date_created', 'date_updated', 'status', 'amount', 'payment_due', 'sales_contract', 'client_contract']
+        fields = ['date_created', 'date_updated', 'status', 'amount', 'payment_due', 'sales_contract',
+                  'client_contract']
 
     def get_client_contract(self, instance):
         queryset = instance.client

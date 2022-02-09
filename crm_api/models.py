@@ -8,7 +8,7 @@ class Company(models.Model):
     name = models.CharField(max_length=250, verbose_name="Company Name", unique=True)
 
     class Meta:
-        verbose_name = "Company"
+        verbose_name = "Companie"
 
     def __str__(self):
         return self.name
@@ -25,6 +25,7 @@ class Client(models.Model):
                                       blank=True, limit_choices_to={'user_team': 3}, related_name='sales')
     date_created = models.DateTimeField(auto_now_add=True, verbose_name='Date Created')
     date_updated = models.DateTimeField(auto_now=True, verbose_name='Date Updated')
+    is_active = models.BooleanField(default=False, verbose_name='Active client')
 
     class Meta:
         verbose_name = "Client"
