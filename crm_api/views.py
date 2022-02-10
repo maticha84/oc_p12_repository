@@ -118,75 +118,52 @@ class ClientByCompanyViewset(ModelViewSet):
 
         client_serializer = ClientSerializer(data=client_data, partial=True)
         if client_serializer.is_valid():
-            data = {
-                'first_name': client_data['first_name'],
-                'last_name': client_data['last_name'],
-                'email': client_data['email'],
-                'phone': client_data['phone'],
-                'mobile': client_data['mobile'],
-                'company': company.id,
-                'sales_contact': request.user.id
-            }
+            client = client_serializer.create(company=company, sales_contact=request.user)
 
-            client_serializer = ClientSerializer(data=data)
-            if client_serializer.is_valid():
-                client = client_serializer.save()
-                return Response(client_serializer.data)
-            return Response(client_serializer.errors)
-        return Response(client_serializer.errors)
+            return Response(client, status=status.HTTP_201_CREATED)
+        return Response(client_serializer.errors, status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
-        client_update_data = request.data
+        client_request_data = request.data
         client_to_modify = Client.objects.filter(pk=kwargs['pk'])
         user = request.user
+
         if not client_to_modify:
             return Response({"Client": f"Client with the id  '{kwargs['pk']} doesn't exist."
                                        f"You can't update this"},
                             status=status.HTTP_404_NOT_FOUND)
-        client_to_modify = client_to_modify.get()
-        if user.user_team == 3 and user.id != client_to_modify.sales_contact.id:
+        client = client_to_modify.get()
+
+        if user.user_team == 3 and user.id != client.sales_contact.id:
             return Response({"Sales User": f"You are not responsible for this client. You cannot change it"},
                             status=status.HTTP_403_FORBIDDEN)
-        data = {}
-        for key in client_update_data:
-            data[key] = client_update_data[key]
-        if 'email' in data:
-            if data['email'] == client_to_modify.email:
-                del data['email']
 
-        if 'sales_contact' in data:
+        if 'sales_contact' in client_request_data:
             if user.user_team == 3:
                 return Response({"Sales User": f"You are not allowed to change the customer's sales manager"},
                                 status=status.HTTP_403_FORBIDDEN)
-            sales_contact = User.objects.filter(email=data['sales_contact'], user_team=3)
+            sales_contact = User.objects.filter(email=client_request_data['sales_contact'], user_team=3)
             if not sales_contact:
                 return Response({"Sales Contact": f"Sales contact {data['sales_contact']} in not available."},
                                 status=status.HTTP_404_NOT_FOUND)
-            sales_contact = sales_contact.get()
-            data['sales_contact'] = sales_contact.id
-            client_to_modify.sales_contact = sales_contact
-        else:
-            data['sales_contact'] = client_to_modify.sales_contact.id
 
-        data['company'] = kwargs['company_id']
+            contact = sales_contact.get()
+            client.sales_contact = contact
+            client.save()
+
+        data = {}
+        for key in client_request_data:
+            if key != 'sales_contact':
+                data[key] = client_request_data[key]
 
         serializer = ClientSerializer(data=data, partial=True)
         if serializer.is_valid():
-            if 'last_name' in data:
-                client_to_modify.last_name = data['last_name']
-            if 'first_name' in data:
-                client_to_modify.first_name = data['first_name']
-            if 'email' in data:
-                client_to_modify.email = data['email']
-            if 'phone' in data:
-                client_to_modify.phone = data['phone']
-            if 'mobile' in data:
-                client_to_modify.mobile = data['mobile']
 
-            client_to_modify.save()
-            serializer = ClientSerializer(client_to_modify)
+            client_to_modify = Client.objects.filter(pk=kwargs['pk'])
+            client_modify = serializer.update(instance=client_to_modify.first(), validated_data=data)
+            client_modified = ClientSerializer(instance=client_modify).data
 
-            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+            return Response(client_modified, status=status.HTTP_202_ACCEPTED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -238,6 +215,21 @@ class ContractByClientViewset(ModelViewSet):
         contracts = Contract.objects.filter(client_id=self.kwargs['client_id'])
 
         return contracts
+
+    def create(self, request, *args, **kwargs):
+        contract_data = request.data
+        client = Client.objects.filter(id=kwargs['client_id'])
+        if not client:
+            return Response({"Client": f"Client '{kwargs['client_id']}' dosen't exist. "
+                                       f"Please create this client before the contract"},
+                            status=status.HTTP_404_NOT_FOUND)
+        client = client.get()
+
+        contract_serializer = ContractSerializer(data=contract_data, partial=True)
+        if contract_serializer.is_valid():
+            contract = contract_serializer.create(sales_contact=request.user, client=client)
+            return Response(contract)
+        return Response(contract_serializer.errors)
 
 
 class EventViewset(ModelViewSet):

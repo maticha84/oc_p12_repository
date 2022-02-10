@@ -21,6 +21,38 @@ class ClientSerializer(ModelSerializer):
         fields = ['first_name', 'last_name', 'email', 'phone', 'mobile', 'date_created', 'date_updated',
                   'company', 'sales_contact']
 
+    def create(self, company=None, sales_contact=None):
+        client = Client(
+            company=company,
+            sales_contact=sales_contact,
+            first_name=self.validated_data['first_name'],
+            last_name=self.validated_data['last_name'],
+            email=self.validated_data['email'],
+            phone=self.validated_data['phone'],
+            mobile=self.validated_data['mobile']
+        )
+        client.save()
+        client_serialized = ClientSerializer(instance=client).data
+        return client_serialized
+
+    """def update(self, instance, validated_data, sales_contact=None):
+        if sales_contact is not None:
+            instance.sales_contact = sales_contact
+        if self.validated_data.get('first_name'):
+            instance.first_name = self.validated_data['first_name']
+        if self.validated_data.get('last_name'):
+            instance.last_name = self.validated_data['last_name']
+        if self.validated_data.get('email'):
+            instance.email = self.validated_data['email']
+        if self.validated_data.get('phone'):
+            instance.phone = self.validated_data['phone']
+        if self.validated_data.get('mobile'):
+            instance.mobile = self.validated_data['mobile']
+        instance.save()
+        return """
+
+
+
     def validate_email(self, value):
         if Client.objects.filter(email=value).exists():
             raise ValidationError({'E-mail Error': f'This client e-mail: {value} already exists'})
@@ -67,15 +99,28 @@ class ContractSerializer(ModelSerializer):
         model = Contract
         fields = ['date_created', 'date_updated', 'status', 'amount', 'payment_due', 'sales_contact', 'client']
 
+    def create(self, sales_contact=None, client=None):
+        contract = Contract(
+            sales_contact=sales_contact,
+            client=client,
+            amount=self.validated_data['amount'],
+            payment_due=self.validated_data['payment_due']
+        )
+        contract.save()
+        contract_serialized = ContractSerializer(instance=contract).data
+        return contract_serialized
+
 
 class ContractListSerializer(ModelSerializer):
     client_contract = SerializerMethodField()
     sales = SerializerMethodField()
 
     class Meta:
-        model = Client
-        fields = ['date_created', 'date_updated', 'status', 'amount', 'payment_due', 'sales_contract',
+        model = Contract
+        fields = ['date_created', 'date_updated', 'status', 'amount', 'payment_due', 'sales',
                   'client_contract']
+
+
 
     def get_client_contract(self, instance):
         queryset = instance.client

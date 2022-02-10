@@ -31,6 +31,6 @@ urlpatterns = [
     path('companies/<int:company_id>/', include(router_client_company.urls)),
     path('', include(router_client.urls)),
     path('', include(router_contract.urls)),
-    path('companies/<int:company_id>/client_by_company/<int:client_id>/', include(router_contract_client.urls)),
+    path('client/<int:client_id>/', include(router_contract_client.urls)),
     path('', include(router_event.urls)),
 ]
