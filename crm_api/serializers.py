@@ -35,23 +35,6 @@ class ClientSerializer(ModelSerializer):
         client_serialized = ClientSerializer(instance=client).data
         return client_serialized
 
-    """def update(self, instance, validated_data, sales_contact=None):
-        if sales_contact is not None:
-            instance.sales_contact = sales_contact
-        if self.validated_data.get('first_name'):
-            instance.first_name = self.validated_data['first_name']
-        if self.validated_data.get('last_name'):
-            instance.last_name = self.validated_data['last_name']
-        if self.validated_data.get('email'):
-            instance.email = self.validated_data['email']
-        if self.validated_data.get('phone'):
-            instance.phone = self.validated_data['phone']
-        if self.validated_data.get('mobile'):
-            instance.mobile = self.validated_data['mobile']
-        instance.save()
-        return """
-
-
 
     def validate_email(self, value):
         if Client.objects.filter(email=value).exists():

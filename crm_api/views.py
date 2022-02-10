@@ -125,11 +125,12 @@ class ClientByCompanyViewset(ModelViewSet):
 
     def update(self, request, *args, **kwargs):
         client_request_data = request.data
-        client_to_modify = Client.objects.filter(pk=kwargs['pk'])
+        client_to_modify = Client.objects.filter(pk=kwargs['pk'], company=kwargs['company_id'])
         user = request.user
 
         if not client_to_modify:
-            return Response({"Client": f"Client with the id  '{kwargs['pk']} doesn't exist."
+            return Response({"Client": f"Client with the id  '{kwargs['pk']}' doesn't exist in the company with"
+                                       f"the ID '{kwargs['company_id']}'."
                                        f"You can't update this"},
                             status=status.HTTP_404_NOT_FOUND)
         client = client_to_modify.get()
@@ -158,9 +159,7 @@ class ClientByCompanyViewset(ModelViewSet):
 
         serializer = ClientSerializer(data=data, partial=True)
         if serializer.is_valid():
-
-            client_to_modify = Client.objects.filter(pk=kwargs['pk'])
-            client_modify = serializer.update(instance=client_to_modify.first(), validated_data=data)
+            client_modify = serializer.update(instance=client, validated_data=data)
             client_modified = ClientSerializer(instance=client_modify).data
 
             return Response(client_modified, status=status.HTTP_202_ACCEPTED)
@@ -169,11 +168,12 @@ class ClientByCompanyViewset(ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         user = request.user
-        client_to_destroy = Client.objects.filter(pk=kwargs['pk'])
+        client_to_destroy = Client.objects.filter(pk=kwargs['pk'], company=kwargs['company_id'])
 
         if not client_to_destroy:
-            return Response({"Client": f"Client with the id  '{kwargs['pk']} doesn't exist."
-                                       f"You can't update this"},
+            return Response({"Client": "Client with the id  '{kwargs['pk']}' doesn't exist in the company with"
+                                       f"the ID '{kwargs['company_id']}'."
+                                       f"You can't delete this"},
                             status=status.HTTP_404_NOT_FOUND)
 
         client_to_destroy = client_to_destroy.get()
@@ -224,12 +224,58 @@ class ContractByClientViewset(ModelViewSet):
                                        f"Please create this client before the contract"},
                             status=status.HTTP_404_NOT_FOUND)
         client = client.get()
-
         contract_serializer = ContractSerializer(data=contract_data, partial=True)
         if contract_serializer.is_valid():
             contract = contract_serializer.create(sales_contact=request.user, client=client)
             return Response(contract)
         return Response(contract_serializer.errors)
+
+    def update(self, request, *args, **kwargs):
+        contract_data = request.data
+        client = Client.objects.filter(pk=kwargs['client_id'])
+        if not client:
+            return Response({"Client": f"Client '{kwargs['client_id']}' dosen't exist. "
+                                       f"Please create this client before the contract"},
+                            status=status.HTTP_404_NOT_FOUND)
+        contract = Contract.objects.filter(pk=kwargs['pk'])
+        if not contract:
+            return Response({"Contract": f"Contract '{kwargs['pk']}' dosen't exist. "
+                                         f"Please create this contract before update this"},
+                            status=status.HTTP_404_NOT_FOUND)
+        contract = contract.get()
+        serializer = ContractSerializer(data=contract_data, partial=True)
+        if serializer.is_valid():
+            contract_modify = serializer.update(instance=contract, validated_data=contract_data)
+            contract_modified = ContractSerializer(instance=contract_modify).data
+            return Response(contract_modified, status=status.HTTP_202_ACCEPTED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, *args, **kwargs):
+        user = request.user
+        contract = Contract.objects.filter(pk=kwargs['pk'], client=kwargs['client_id'])
+
+        if not contract:
+            return Response({"Contract": f"Contract with the id  '{kwargs['pk']}' for Client with the ID "
+                                         f"'{kwargs['client_id']}'doesn't exist. " 
+                                         f"You can't delete this"},
+                            status=status.HTTP_404_NOT_FOUND)
+        contract = contract.get()
+        if user.user_team == 3 and user.id != contract.sales_contact.id:
+            return Response({"Sales User": f"You are not responsible for this client. You cannot change it"},
+                            status=status.HTTP_403_FORBIDDEN)
+        try:
+            contract.delete()
+            return Response(
+                {'Deleted': f'The contract with id {kwargs["pk"]} has been deleted successfully'},
+                status=status.HTTP_204_NO_CONTENT
+            )
+        except RestrictedError:
+            return Response(
+                {'Restriction error': f'Event is attached to this contract. '
+                                      f'Delete the associated event to remove this client.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
 
 
 class EventViewset(ModelViewSet):

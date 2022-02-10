@@ -44,6 +44,7 @@ class Contract(models.Model):
 
     class Meta:
         verbose_name = "Contract"
+        ordering = ["client"]
 
     def __str__(self):
         return self.str(self.id)
