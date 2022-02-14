@@ -276,5 +276,6 @@ class ContractByClientViewset(ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+
 class EventViewset(ModelViewSet):
     pass

@@ -46,9 +46,6 @@ class Contract(models.Model):
         verbose_name = "Contract"
         ordering = ["client"]
 
-    def __str__(self):
-        return self.str(self.id)
-
 
 class Event(models.Model):
     CHOICES_STATUS = (
