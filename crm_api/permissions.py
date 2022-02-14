@@ -65,7 +65,6 @@ class IsSalesTeam(BasePermission):
 
 
 class IsSalesView(BasePermission):
-
     message = "You are not a member of the sales team. You do not have access authorization."
 
     def has_permission(self, request, view):
@@ -81,5 +80,30 @@ class IsSalesView(BasePermission):
 
         elif view.action in ['update']:
             if team == 1 or team == 3:
+                return True
+            return False
+
+
+class IsEventView(BasePermission):
+    message = "You are not allowed to do this action."
+
+    def has_permission(self, request, view):
+        user = request.user
+        team = user.user_team
+        if view.action in ['list', 'retrieve']:
+            return True
+
+        elif view.action in ['create']:
+            if not team == 3:
+                return False
+            return True
+
+        elif view.action in ['update']:
+            if team == 1 or team == 3:
+                return True
+            return False
+
+        elif view.action in ['destroy']:
+            if team == 2 or team == 3:
                 return True
             return False

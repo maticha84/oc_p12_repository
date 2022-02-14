@@ -49,20 +49,22 @@ class Contract(models.Model):
 
 class Event(models.Model):
     CHOICES_STATUS = (
-        (1, 'Begin'),
-        (2, 'In Progress'),
-        (3, 'Ended')
+        (1, 'Not attributed'),
+        (2, 'Begin'),
+        (3, 'In Progress'),
+        (4, 'Ended')
 
     )
-    status = models.PositiveSmallIntegerField(choices=CHOICES_STATUS, verbose_name="Status")
-    contract = models.OneToOneField(to=Contract, on_delete=models.CASCADE)
+    status = models.PositiveSmallIntegerField(choices=CHOICES_STATUS, verbose_name="Status", default=1)
+    contract = models.OneToOneField(to=Contract, on_delete=models.CASCADE, related_name='contract_event')
     support_contact = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.RESTRICT, null=True,
-                                        blank=True, limit_choices_to={'user_team': 2})
+                                        blank=True, limit_choices_to={'user_team': 2}, related_name="support")
     date_created = models.DateTimeField(auto_now_add=True, verbose_name='Date Created')
     date_updated = models.DateTimeField(auto_now=True, verbose_name='Date Updated')
-    event_date = models.DateTimeField(blank=True, null=True, verbose_name="Date of the Event")
+    date_event = models.DateTimeField(blank=True, null=True, verbose_name="Date of the Event")
     attendees = models.IntegerField(blank=True, null=True, verbose_name="Number of attendees")
     note = models.TextField(blank=True, verbose_name="Notes")
 
     class Meta:
         verbose_name = "Event"
+        ordering = ["status"]

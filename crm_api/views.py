@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.db.models import RestrictedError
+from django.db.utils import IntegrityError
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
@@ -8,11 +9,12 @@ from .serializers import (
     ClientSerializer,
     ContractSerializer,
     EventSerializer,
+    EventListSerializer,
     CompanySerializer,
     ClientListSerializer,
     ContractListSerializer,
 )
-from .permissions import IsAuthenticated, IsSalesView
+from .permissions import IsAuthenticated, IsSalesView, IsEventView
 from .models import Client, Contract, Event, Company
 from authentication.models import User
 
@@ -227,8 +229,8 @@ class ContractByClientViewset(ModelViewSet):
         contract_serializer = ContractSerializer(data=contract_data, partial=True)
         if contract_serializer.is_valid():
             contract = contract_serializer.create(sales_contact=request.user, client=client)
-            return Response(contract)
-        return Response(contract_serializer.errors)
+            return Response(contract, status=status.HTTP_201_CREATED)
+        return Response(contract_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
         contract_data = request.data
@@ -256,7 +258,7 @@ class ContractByClientViewset(ModelViewSet):
 
         if not contract:
             return Response({"Contract": f"Contract with the id  '{kwargs['pk']}' for Client with the ID "
-                                         f"'{kwargs['client_id']}'doesn't exist. " 
+                                         f"'{kwargs['client_id']}'doesn't exist. "
                                          f"You can't delete this"},
                             status=status.HTTP_404_NOT_FOUND)
         contract = contract.get()
@@ -278,4 +280,45 @@ class ContractByClientViewset(ModelViewSet):
 
 
 class EventViewset(ModelViewSet):
-    pass
+    serializer_class = EventListSerializer
+    permission_classes = (IsAuthenticated, IsEventView)
+    http_method_names = ['get', 'retrieve', ]
+
+    def get_queryset(self):
+        user = self.request.user
+        events = Event.objects.all()
+
+        return events
+
+
+class EventByContractViewset(ModelViewSet):
+    serializer_class = EventListSerializer
+    permission_classes = (IsAuthenticated, IsEventView)
+
+    def get_queryset(self):
+        user = self.request.user
+        events = Event.objects.filter(contract_id=self.kwargs['contract_id'])
+
+        return events
+
+    def create(self, request, *args, **kwargs):
+        event_data = request.data
+        contract = Contract.objects.filter(id=kwargs['contract_id'])
+        if not contract:
+            return Response({"Contract": f"Contract '{kwargs['contract_id']}' dosen't exist. "
+                                         f"Please create this contract before the event"},
+                            status=status.HTTP_404_NOT_FOUND)
+        contract = contract.get()
+
+        event_serializer = EventSerializer(data=event_data, partial=True)
+
+        if event_serializer.is_valid():
+            try:
+                event = event_serializer.create(contract=contract)
+                return Response(event, status=status.HTTP_201_CREATED)
+            except IntegrityError:
+                return Response({"Contract": f"Contract '{kwargs['contract_id']}' has already an attached event. "
+                                             f"Please choose another contract"},
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(event_serializer.errors, status=status.HTTP_400_BAD_REQUEST)

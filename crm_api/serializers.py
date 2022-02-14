@@ -35,7 +35,6 @@ class ClientSerializer(ModelSerializer):
         client_serialized = ClientSerializer(instance=client).data
         return client_serialized
 
-
     def validate_email(self, value):
         if Client.objects.filter(email=value).exists():
             raise ValidationError({'E-mail Error': f'This client e-mail: {value} already exists'})
@@ -103,8 +102,6 @@ class ContractListSerializer(ModelSerializer):
         fields = ['date_created', 'date_updated', 'status', 'amount', 'payment_due', 'sales',
                   'client_contract']
 
-
-
     def get_client_contract(self, instance):
         queryset = instance.client
         serializer = ClientSerializer(queryset)
@@ -120,4 +117,36 @@ class EventSerializer(ModelSerializer):
     class Meta:
         model = Event
         fields = ['status', 'contract', 'support_contact', 'date_created',
-                  'date_updated', 'event_date ', 'attendees', 'note']
+                  'date_updated', 'date_event', 'attendees', 'note']
+
+    def create(self, contract=None):
+        event = Event(
+            support_contact=None,
+            contract=contract,
+            date_event=self.validated_data['date_event'],
+            attendees=self.validated_data['attendees'],
+            note=self.validated_data['note']
+        )
+        event.save()
+        event_serialized = EventSerializer(instance=event).data
+        return event_serialized
+
+
+class EventListSerializer(ModelSerializer):
+    contract_event = SerializerMethodField()
+    support = SerializerMethodField()
+
+    class Meta:
+        model = Event
+        fields = ['status', 'contract_event', 'support', 'date_created',
+                  'date_updated', 'date_event ', 'attendees', 'note']
+
+    def get_contract_event(self, instance):
+        queryset = instance.contract
+        serializer = ContractSerializer(queryset)
+        return serializer.data
+
+    def get_support(self, instance):
+        queryset = instance.support_contact
+        serializer = UserSerializer(queryset)
+        return serializer.data
