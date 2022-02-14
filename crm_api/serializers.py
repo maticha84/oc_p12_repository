@@ -139,11 +139,11 @@ class EventListSerializer(ModelSerializer):
     class Meta:
         model = Event
         fields = ['status', 'contract_event', 'support', 'date_created',
-                  'date_updated', 'date_event ', 'attendees', 'note']
+                  'date_updated', 'date_event', 'attendees', 'note']
 
     def get_contract_event(self, instance):
         queryset = instance.contract
-        serializer = ContractSerializer(queryset)
+        serializer = ContractListSerializer(queryset)
         return serializer.data
 
     def get_support(self, instance):
