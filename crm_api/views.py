@@ -339,7 +339,12 @@ class EventByContractViewset(ModelViewSet):
                 return Response({"Request user": "You're not allowed to update this event."})
 
         data_event = {}
-        if 'support_contact' in event_data and user.user_team == 1:
+
+        if 'support_contact' in event_data and user.user_team != 1:
+            return Response({"Support contact": "You're not allowed to attached a user support to this event. "
+                                                "Please contact the management team."},
+                            status=status.HTTP_403_FORBIDDEN)
+        elif 'support_contact' in event_data and user.user_team == 1:
             support_user = User.objects.filter(email=event_data['support_contact'], user_team=2)
             if not support_user:
                 return Response({"Support contact": f"User support with email '{event_data['support_contact']}' "
@@ -355,10 +360,6 @@ class EventByContractViewset(ModelViewSet):
         else:
             data_event = event_data
 
-        if 'support_contact' in event_data and user.user_team != 1:
-            return Response({"Support contact": "You're not allowed to attached a user support to this event. "
-                                                "Please contact the management team."},
-                            status=status.HTTP_403_FORBIDDEN)
         if 'status' in event_data:
             if support_user is None or user != support_user:
                 return Response({"Status Event": "You're not allowed to modify status Event."})
