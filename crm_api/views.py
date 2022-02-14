@@ -234,12 +234,7 @@ class ContractByClientViewset(ModelViewSet):
 
     def update(self, request, *args, **kwargs):
         contract_data = request.data
-        client = Client.objects.filter(pk=kwargs['client_id'])
-        if not client:
-            return Response({"Client": f"Client '{kwargs['client_id']}' dosen't exist. "
-                                       f"Please create this client before the contract"},
-                            status=status.HTTP_404_NOT_FOUND)
-        contract = Contract.objects.filter(pk=kwargs['pk'])
+        contract = Contract.objects.filter(pk=kwargs['pk'], client=kwargs['client_id'])
         if not contract:
             return Response({"Contract": f"Contract '{kwargs['pk']}' dosen't exist. "
                                          f"Please create this contract before update this"},
@@ -322,3 +317,55 @@ class EventByContractViewset(ModelViewSet):
                                 status=status.HTTP_400_BAD_REQUEST)
 
         return Response(event_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, *args, **kwargs):
+        event_data = request.data
+        user = request.user
+        event = Event.objects.filter(pk=kwargs['pk'], contract=kwargs['contract_id'])
+
+        if not event:
+            return Response({"Event": f"Event '{kwargs['pk']}' dosen't exist. "
+                                      f"Please create this event before update this"},
+                            status=status.HTTP_404_NOT_FOUND)
+        event = event.get()
+        support_user = event.support_contact
+        sales_user = event.contract.sales_contact
+
+        if support_user is None:
+            if user != sales_user and user.user_team != 1:
+                return Response({"Request user": "You're not allowed to update this event."})
+        else:
+            if user != support_user and user != sales_user and user.user_team != 1:
+                return Response({"Request user": "You're not allowed to update this event."})
+
+        data_event = {}
+        if 'support_contact' in event_data and user.user_team == 1:
+            support_user = User.objects.filter(email=event_data['support_contact'], user_team=2)
+            if not support_user:
+                return Response({"Support contact": f"User support with email '{event_data['support_contact']}' "
+                                                    f"doesn't exit. You can't assigned it to this event."},
+                                status=status.HTTP_404_NOT_FOUND)
+            support_user = support_user.get()
+            event.support_contact = support_user
+            event.status = 2
+            event.save()
+            for key in event_data:
+                if not key == 'support_contact':
+                    data_event[key] = event_data[key]
+        else:
+            data_event = event_data
+
+        if 'support_contact' in event_data and user.user_team != 1:
+            return Response({"Support contact": "You're not allowed to attached a user support to this event. "
+                                                "Please contact the management team."},
+                            status=status.HTTP_403_FORBIDDEN)
+        if 'status' in event_data:
+            if support_user is None or user != support_user:
+                return Response({"Status Event": "You're not allowed to modify status Event."})
+
+        serializer = EventSerializer(data=data_event, partial=True)
+        if serializer.is_valid():
+            event_modify = serializer.update(instance=event, validated_data=data_event)
+            event_modified = EventSerializer(instance=event_modify).data
+            return Response(event_modified, status=status.HTTP_202_ACCEPTED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

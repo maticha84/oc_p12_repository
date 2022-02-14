@@ -90,18 +90,13 @@ class IsEventView(BasePermission):
     def has_permission(self, request, view):
         user = request.user
         team = user.user_team
-        if view.action in ['list', 'retrieve']:
+        if view.action in ['list', 'retrieve', 'update']:
             return True
 
         elif view.action in ['create']:
             if not team == 3:
                 return False
             return True
-
-        elif view.action in ['update']:
-            if team == 1 or team == 3:
-                return True
-            return False
 
         elif view.action in ['destroy']:
             if team == 2 or team == 3:
