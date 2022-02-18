@@ -229,6 +229,9 @@ class ContractByClientViewset(ModelViewSet):
         contract_serializer = ContractSerializer(data=contract_data, partial=True)
         if contract_serializer.is_valid():
             contract = contract_serializer.create(sales_contact=request.user, client=client)
+            if not client.is_active:
+                client.is_active = True
+                client.save()
             return Response(contract, status=status.HTTP_201_CREATED)
         return Response(contract_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -257,11 +260,16 @@ class ContractByClientViewset(ModelViewSet):
                                          f"You can't delete this"},
                             status=status.HTTP_404_NOT_FOUND)
         contract = contract.get()
+        client = contract.client
+
         if user.user_team == 3 and user.id != contract.sales_contact.id:
             return Response({"Sales User": f"You are not responsible for this client. You cannot change it"},
                             status=status.HTTP_403_FORBIDDEN)
         try:
             contract.delete()
+            if len(client.client_contract.all()) == 0:
+                client.is_active = False
+                client.save()
             return Response(
                 {'Deleted': f'The contract with id {kwargs["pk"]} has been deleted successfully'},
                 status=status.HTTP_204_NO_CONTENT
@@ -304,12 +312,17 @@ class EventByContractViewset(ModelViewSet):
                                          f"Please create this contract before the event"},
                             status=status.HTTP_404_NOT_FOUND)
         contract = contract.get()
-
+        if contract.sales_contact != request.user:
+            return Response({"Request user": f"You're not allowed to create this event. "
+                                             f"Only {contract.sales_contact.email} is allowed to do this."},
+                            status=status.HTTP_403_FORBIDDEN)
         event_serializer = EventSerializer(data=event_data, partial=True)
 
         if event_serializer.is_valid():
             try:
                 event = event_serializer.create(contract=contract)
+                contract.status = True
+                contract.save()
                 return Response(event, status=status.HTTP_201_CREATED)
             except IntegrityError:
                 return Response({"Contract": f"Contract '{kwargs['contract_id']}' has already an attached event. "
@@ -384,7 +397,7 @@ class EventByContractViewset(ModelViewSet):
                                       f"Please create this event before update this"},
                             status=status.HTTP_404_NOT_FOUND)
         event = event.get()
-
+        contract = event.contract
         support_user = event.support_contact
         sales_user = event.contract.sales_contact
 
@@ -400,6 +413,8 @@ class EventByContractViewset(ModelViewSet):
                                 status=status.HTTP_403_FORBIDDEN)
 
         event.delete()
+        contract.status = False
+        contract.save()
         return Response(
             {'Deleted': f'The event with id {kwargs["pk"]} has been deleted successfully'},
             status=status.HTTP_204_NO_CONTENT

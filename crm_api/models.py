@@ -31,6 +31,9 @@ class Client(models.Model):
         verbose_name = "Client"
         ordering = ["company"]
 
+    def __str__(self):
+        return self.email
+
 
 class Contract(models.Model):
     date_created = models.DateTimeField(auto_now_add=True, verbose_name='Date Created')
@@ -46,6 +49,8 @@ class Contract(models.Model):
         verbose_name = "Contract"
         ordering = ["client"]
 
+    def __str__(self):
+        return self.client.email
 
 class Event(models.Model):
     CHOICES_STATUS = (
