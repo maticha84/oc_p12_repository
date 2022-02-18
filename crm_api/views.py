@@ -333,10 +333,12 @@ class EventByContractViewset(ModelViewSet):
 
         if support_user is None:
             if user != sales_user and user.user_team != 1:
-                return Response({"Request user": "You're not allowed to update this event."})
+                return Response({"Request user": "You're not allowed to update this event."},
+                                status=status.HTTP_403_FORBIDDEN)
         else:
             if user != support_user and user != sales_user and user.user_team != 1:
-                return Response({"Request user": "You're not allowed to update this event."})
+                return Response({"Request user": "You're not allowed to update this event."},
+                                status=status.HTTP_403_FORBIDDEN)
 
         data_event = {}
 
@@ -362,7 +364,8 @@ class EventByContractViewset(ModelViewSet):
 
         if 'status' in event_data:
             if support_user is None or user != support_user:
-                return Response({"Status Event": "You're not allowed to modify status Event."})
+                return Response({"Status Event": "You're not allowed to modify status Event."},
+                                status=status.HTTP_403_FORBIDDEN)
 
         serializer = EventSerializer(data=data_event, partial=True)
         if serializer.is_valid():
@@ -370,3 +373,34 @@ class EventByContractViewset(ModelViewSet):
             event_modified = EventSerializer(instance=event_modify).data
             return Response(event_modified, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, *args, **kwargs):
+        event_data = request.data
+        user = request.user
+        event = Event.objects.filter(pk=kwargs['pk'], contract=kwargs['contract_id'])
+
+        if not event:
+            return Response({"Event": f"Event '{kwargs['pk']}' dosen't exist. "
+                                      f"Please create this event before update this"},
+                            status=status.HTTP_404_NOT_FOUND)
+        event = event.get()
+
+        support_user = event.support_contact
+        sales_user = event.contract.sales_contact
+
+        if support_user is None:
+            if user != sales_user:
+                return Response({"Request user": f"You're not allowed to delete this event. "
+                                                 f"Only {sales_user.email} is allowed to delete this event."},
+                                status=status.HTTP_403_FORBIDDEN)
+        else:
+            if user != support_user:
+                return Response({"Request user": f"You're not allowed to delete this event. "
+                                                 f"Only {support_user.email} is allowed to delete this event."},
+                                status=status.HTTP_403_FORBIDDEN)
+
+        event.delete()
+        return Response(
+            {'Deleted': f'The event with id {kwargs["pk"]} has been deleted successfully'},
+            status=status.HTTP_204_NO_CONTENT
+        )
