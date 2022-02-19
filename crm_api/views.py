@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.db.models import RestrictedError
 from django.db.utils import IntegrityError
+from django_filters import rest_framework as filters
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
@@ -14,6 +15,7 @@ from .serializers import (
     ClientListSerializer,
     ContractListSerializer,
 )
+from .filters import ClientFilterSet
 from .permissions import IsAuthenticated, IsSalesView, IsEventView
 from .models import Client, Contract, Event, Company
 from authentication.models import User
@@ -90,6 +92,8 @@ class ClientViewset(ModelViewSet):
     serializer_class = ClientListSerializer
     permission_classes = (IsAuthenticated, IsSalesView)
     http_method_names = ['get', 'retrieve', ]
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = ClientFilterSet
 
     def get_queryset(self):
         user = self.request.user
