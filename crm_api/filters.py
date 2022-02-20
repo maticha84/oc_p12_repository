@@ -1,6 +1,6 @@
 from django_filters import rest_framework as filters
 
-from .models import Client, Contract
+from .models import Client, Contract, Event
 
 
 class ClientFilterSet(filters.FilterSet):
@@ -52,4 +52,29 @@ class ContractFilterSet(filters.FilterSet):
             'client',
             'date_created',
             'amount',
+        ]
+
+
+class EventFilterSet(filters.FilterSet):
+    """ Implement filters to be used with EventViewset"""
+
+    name_contains = filters.CharFilter(
+        field_name='contract', lookup_expr='client__company__name__icontains'
+    )
+    email = filters.CharFilter(
+        field_name='contract', lookup_expr='client__email__icontains'
+    )
+    date_event = filters.DateTimeFilter(
+        field_name='date_event', lookup_expr='gte'
+    )
+
+    def filter_sort_by(self, queryset, name, value):
+        values = value.lower().split(',')
+        return queryset.order_by(*values)
+
+    class Meta:
+        model = Event
+        fields = [
+            'contract',
+            'date_event',
         ]

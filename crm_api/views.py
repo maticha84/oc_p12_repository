@@ -17,7 +17,8 @@ from .serializers import (
 )
 from .filters import (
     ClientFilterSet,
-    ContractFilterSet
+    ContractFilterSet,
+    EventFilterSet
 )
 from .permissions import IsAuthenticated, IsSalesView, IsEventView
 from .models import Client, Contract, Event, Company
@@ -295,6 +296,8 @@ class EventViewset(ModelViewSet):
     serializer_class = EventListSerializer
     permission_classes = (IsAuthenticated, IsEventView)
     http_method_names = ['get', 'retrieve', ]
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = EventFilterSet
 
     def get_queryset(self):
         user = self.request.user
