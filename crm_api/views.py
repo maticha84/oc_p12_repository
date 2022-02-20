@@ -15,7 +15,10 @@ from .serializers import (
     ClientListSerializer,
     ContractListSerializer,
 )
-from .filters import ClientFilterSet
+from .filters import (
+    ClientFilterSet,
+    ContractFilterSet
+)
 from .permissions import IsAuthenticated, IsSalesView, IsEventView
 from .models import Client, Contract, Event, Company
 from authentication.models import User
@@ -204,6 +207,8 @@ class ContractViewset(ModelViewSet):
     serializer_class = ContractListSerializer
     permission_classes = (IsAuthenticated, IsSalesView)
     http_method_names = ['get', 'retrieve', ]
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = ContractFilterSet
 
     def get_queryset(self):
         user = self.request.user

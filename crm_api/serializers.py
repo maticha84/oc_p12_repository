@@ -104,7 +104,7 @@ class ContractListSerializer(ModelSerializer):
 
     def get_client_contract(self, instance):
         queryset = instance.client
-        serializer = ClientSerializer(queryset)
+        serializer = ClientListSerializer(queryset)
         return serializer.data
 
     def get_sales(self, instance):
