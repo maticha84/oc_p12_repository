@@ -109,12 +109,13 @@ class ClientViewset(ModelViewSet):
 class ClientByCompanyViewset(ModelViewSet):
     serializer_class = ClientListSerializer
     permission_classes = (IsAuthenticated, IsSalesView)
+    http_method_names = ['post', 'put', 'delete']
 
-    def get_queryset(self):
-        user = self.request.user
-        clients = Client.objects.filter(company_id=self.kwargs['company_id'])
+ #   def get_queryset(self):
+ #       user = self.request.user
+ #       clients = Client.objects.filter(company_id=self.kwargs['company_id'])
 
-        return clients
+ #       return clients
 
     def create(self, request, *args, **kwargs):
         client_data = request.data

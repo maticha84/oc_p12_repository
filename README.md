@@ -61,19 +61,39 @@ ___
 ___
 
 
-|  #  | Enpoints of the CRM API description                                                            |  HTTP Method | URI                                      |
+|  #  | Endpoints of the CRM API description                                                            |  HTTP Method | URI                                      |
 |:---:|------------------------------------------------------------------------------------------------|:------------:|:-----------------------------------------|
 |  1. | User's registration                                                                            |     POST     | /registration/                           |
 |  2. | User's connexion                                                                               |     POST     | /login/                                  |
 |  3. | User's token refresh                                                                           |     POST     | /login/refresh/                          |
 |  4. | Company's get list                                                                             |     GET      | /companies/                              |
-|  5. | Company's get by id                                                                            |     GET      | /companies/{id}                          |
+|  5. | Company's get by id                                                                            |     GET      | /companies/{id}/                         |
 |  6. | Company's creation                                                                             |     POST     | /companies/                              |
 |  7. | Company's name modification                                                                    |     PUT      | /companies/{id}/                         |
 |  8. | Company's deletion                                                                             |     DELETE   | /companies/{id}/                         |
 |  9. | Client's information get list - all client or by filter                                        |     GET      | /clients/                                |
 |  10.| Client's information by id                                                                     |     GET      | /clients/{id}                            |
+|  11.| Client's creation                                                                              |     POST     | /companies/{id}/client_by_company/       |
+|  12.| Client's modification                                                                          |     PUT      | /companies/{id}/client_by_company/{id}/  |
+|  13.| Client's deletion                                                                              |     DELETE   | /companies/{id}/client_by_company/{id}/  |
 
 
+
+
+
+
+|  #  | Filters for /clients/                     | HTTP Method  |    URI                                           |
+|:---:|-------------------------------------------|:------------:|:-------------------------------------------------|
+|  1. | Search by company name                    | GET          |    /clients/?company_name=_partial_company_name_ |
+|  2. | Search by client email                    | GET          |    /clients/?email=_exact_email_                 |
+
+
+|  #  | Filters for /contracts/                   | HTTP Method  |    URI                                   |
+|:---:|-------------------------------------------|:------------:|:-----------------------------------------|
+|  #  | Search by company name                    | HTTP Method  |                                          |
+
+|  #  | Filters for /events/                      | HTTP Method  |    URI                                   |
+|:---:|-------------------------------------------|:------------:|:-----------------------------------------|
+|  #  | Search for /clients/                      | HTTP Method  |    URI                                   |
 
 You will find the [Postman documentation here](https://documenter.getpostman.com/view/16915168/UVkmRcZd).
