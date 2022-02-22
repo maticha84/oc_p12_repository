@@ -111,12 +111,6 @@ class ClientByCompanyViewset(ModelViewSet):
     permission_classes = (IsAuthenticated, IsSalesView)
     http_method_names = ['post', 'put', 'delete']
 
- #   def get_queryset(self):
- #       user = self.request.user
- #       clients = Client.objects.filter(company_id=self.kwargs['company_id'])
-
- #       return clients
-
     def create(self, request, *args, **kwargs):
         client_data = request.data
 
@@ -222,12 +216,7 @@ class ContractViewset(ModelViewSet):
 class ContractByClientViewset(ModelViewSet):
     serializer_class = ContractListSerializer
     permission_classes = (IsAuthenticated, IsSalesView)
-
-    def get_queryset(self):
-        user = self.request.user
-        contracts = Contract.objects.filter(client_id=self.kwargs['client_id'])
-
-        return contracts
+    http_method_names = ['post', 'put', 'delete']
 
     def create(self, request, *args, **kwargs):
         contract_data = request.data
@@ -310,12 +299,7 @@ class EventViewset(ModelViewSet):
 class EventByContractViewset(ModelViewSet):
     serializer_class = EventListSerializer
     permission_classes = (IsAuthenticated, IsEventView)
-
-    def get_queryset(self):
-        user = self.request.user
-        events = Event.objects.filter(contract_id=self.kwargs['contract_id'])
-
-        return events
+    http_method_names = ['post', 'put', 'delete']
 
     def create(self, request, *args, **kwargs):
         event_data = request.data
