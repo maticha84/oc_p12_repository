@@ -6,7 +6,7 @@ from .models import Client, Contract, Event
 class ClientFilterSet(filters.FilterSet):
     """ Implement filters to be used with ClientViewset"""
 
-    name_contains = filters.CharFilter(
+    company_name = filters.CharFilter(
         field_name='company', lookup_expr='name__icontains'
     )
 
@@ -29,7 +29,7 @@ class ClientFilterSet(filters.FilterSet):
 class ContractFilterSet(filters.FilterSet):
     """ Implement filters to be used with ContractViewset"""
 
-    name_contains = filters.CharFilter(
+    company_name = filters.CharFilter(
         field_name='client', lookup_expr='company__name__icontains'
     )
     email = filters.CharFilter(
@@ -58,7 +58,7 @@ class ContractFilterSet(filters.FilterSet):
 class EventFilterSet(filters.FilterSet):
     """ Implement filters to be used with EventViewset"""
 
-    name_contains = filters.CharFilter(
+    company_name = filters.CharFilter(
         field_name='contract', lookup_expr='client__company__name__icontains'
     )
     email = filters.CharFilter(
