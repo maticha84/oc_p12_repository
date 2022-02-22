@@ -226,6 +226,10 @@ class ContractByClientViewset(ModelViewSet):
                                        f"Please create this client before the contract"},
                             status=status.HTTP_404_NOT_FOUND)
         client = client.get()
+        if client.sales_contact != request.user:
+            return Response({"Sales User": f"You are not responsible for this client. You cannot add a contract"
+                                           f"to it. Only {client.sales_contact.email} can do this"},
+                            status=status.HTTP_403_FORBIDDEN)
         contract_serializer = ContractSerializer(data=contract_data, partial=True)
         if contract_serializer.is_valid():
             contract = contract_serializer.create(sales_contact=request.user, client=client)

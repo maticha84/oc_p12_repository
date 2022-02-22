@@ -65,7 +65,7 @@ class IsSalesTeam(BasePermission):
 
 
 class IsSalesView(BasePermission):
-    message = "You are not a member of the sales team. You do not have access authorization."
+    message = "You are not allowed to do this action."
 
     def has_permission(self, request, view):
         user = request.user

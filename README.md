@@ -61,22 +61,26 @@ ___
 ___
 
 
-|  #  | Endpoints of the CRM API description                                                            |  HTTP Method | URI                                      |
-|:---:|------------------------------------------------------------------------------------------------|:------------:|:-----------------------------------------|
-|  1. | User's registration                                                                            |     POST     | /registration/                           |
-|  2. | User's connexion                                                                               |     POST     | /login/                                  |
-|  3. | User's token refresh                                                                           |     POST     | /login/refresh/                          |
-|  4. | Company's get list                                                                             |     GET      | /companies/                              |
-|  5. | Company's get by id                                                                            |     GET      | /companies/{id}/                         |
-|  6. | Company's creation                                                                             |     POST     | /companies/                              |
-|  7. | Company's name modification                                                                    |     PUT      | /companies/{id}/                         |
-|  8. | Company's deletion                                                                             |     DELETE   | /companies/{id}/                         |
-|  9. | Client's information get list - all client or by filter                                        |     GET      | /clients/                                |
-|  10.| Client's information by id                                                                     |     GET      | /clients/{id}                            |
-|  11.| Client's creation                                                                              |     POST     | /companies/{id}/client_by_company/       |
-|  12.| Client's modification                                                                          |     PUT      | /companies/{id}/client_by_company/{id}/  |
-|  13.| Client's deletion                                                                              |     DELETE   | /companies/{id}/client_by_company/{id}/  |
-
+|  #  | Endpoints of the CRM API description                                      |  HTTP Method | URI                                        |
+|:---:|---------------------------------------------------------------------------|:------------:|:--------------------------------------------|
+|  1. | User's registration                                                       |     POST     | /registration/                              |
+|  2. | User's connexion                                                          |     POST     | /login/                                     |
+|  3. | User's token refresh                                                      |     POST     | /login/refresh/                             |
+|  4. | Company's get list                                                        |     GET      | /companies/                                 |
+|  5. | Company's get by id                                                       |     GET      | /companies/{id}/                            |
+|  6. | Company's creation                                                        |    POST     | /companies/                                 |
+|  7. | Company's name modification                                               |     PUT      | /companies/{id}/                            |
+|  8. | Company's deletion                                                        |     DELETE   | /companies/{id}/                            |
+|  9. | Client's information get list - all clients or by filter                  |     GET      | /clients/                                   |
+|  10.| Client's information by id                                                |     GET      | /clients/{id}                               |
+|  11.| Client's creation                                                         |     POST     | /companies/{id}/client_by_company/          |
+|  12.| Client's modification                                                     |     PUT      | /companies/{id}/client_by_company/{id}/     |
+|  13.| Client's deletion                                                         |     DELETE   | /companies/{id}/client_by_company/{id}/     |
+|  14.| Contract's information get list - all contracts or by filter              |     GET      | /contracts/                                 |
+|  15.| Contract's information by id                                              |     GET      | /contracts/{id}                             |
+|  16.| Contract's creation                                                       |     POST     | /clients/{id}/contracts_by_client/          |
+|  17.| Contract's modification                                                   |     PUT      | /clients/{id}/contracts_by_client/{id}/     |
+|  18.| Contract's deletion                                                       |     DELETE   | /clients/{id}/contracts_by_client/{id}/     |
 
 
 
@@ -88,9 +92,13 @@ ___
 |  2. | Search by client email                    | GET          |    /clients/?email=_exact_email_                 |
 
 
-|  #  | Filters for /contracts/                   | HTTP Method  |    URI                                   |
-|:---:|-------------------------------------------|:------------:|:-----------------------------------------|
-|  #  | Search by company name                    | HTTP Method  |                                          |
+|  #  | Filters for /contracts/                   | HTTP Method  |    URI                                            |
+|:---:|-------------------------------------------|:------------:|:--------------------------------------------------|
+|  1. | Search by company name                    | HTTP Method  |    /contracts/?company_name=_partial_company_name_|
+|  2. | Search by client email                    | HTTP Method  |    /contracts/?email=_exact_email_                |
+|  3. | Search by date of contract                | HTTP Method  |    /contracts/?date_contract=_yyyy-mm-dd_         |
+|  4. | Search by amount                          | HTTP Method  |    /contracts/?amount=_0123456789_                |
+
 
 |  #  | Filters for /events/                      | HTTP Method  |    URI                                   |
 |:---:|-------------------------------------------|:------------:|:-----------------------------------------|
