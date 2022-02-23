@@ -247,6 +247,10 @@ class ContractByClientViewset(ModelViewSet):
                                          f"Please create this contract before update this"},
                             status=status.HTTP_404_NOT_FOUND)
         contract = contract.get()
+        if contract.sales_contact != request.user and request.user.user_team == 3:
+            return Response({"Sales User": f"You are not responsible for this client. You cannot modify a contract"
+                                           f"to it. Only {contract.sales_contact.email} can do this"},
+                            status=status.HTTP_403_FORBIDDEN)
         serializer = ContractSerializer(data=contract_data, partial=True)
         if serializer.is_valid():
             contract_modify = serializer.update(instance=contract, validated_data=contract_data)
@@ -266,24 +270,19 @@ class ContractByClientViewset(ModelViewSet):
         contract = contract.get()
         client = contract.client
 
-        if user.user_team == 3 and user.id != contract.sales_contact.id:
-            return Response({"Sales User": f"You are not responsible for this client. You cannot change it"},
+        if contract.sales_contact != request.user:
+            return Response({"Sales User": f"You are not responsible for this client. You cannot delete a contract"
+                                           f"to it. Only {contract.sales_contact.email} can do this"},
                             status=status.HTTP_403_FORBIDDEN)
-        try:
-            contract.delete()
-            if len(client.client_contract.all()) == 0:
-                client.is_active = False
-                client.save()
-            return Response(
-                {'Deleted': f'The contract with id {kwargs["pk"]} has been deleted successfully'},
-                status=status.HTTP_204_NO_CONTENT
-            )
-        except RestrictedError:
-            return Response(
-                {'Restriction error': f'Event is attached to this contract. '
-                                      f'Delete the associated event to remove this client.'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+
+        contract.delete()
+        if len(client.client_contract.all()) == 0:
+            client.is_active = False
+            client.save()
+        return Response(
+            {'Deleted': f'The contract with id {kwargs["pk"]} has been deleted successfully'},
+            status=status.HTTP_204_NO_CONTENT
+        )
 
 
 class EventViewset(ModelViewSet):
