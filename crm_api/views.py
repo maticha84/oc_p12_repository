@@ -346,11 +346,15 @@ class EventByContractViewset(ModelViewSet):
 
         if support_user is None:
             if user != sales_user and user.user_team != 1:
-                return Response({"Request user": "You're not allowed to update this event."},
+                return Response({"Request user": f"You're not allowed to update this event. "
+                                                 f"Only {sales_user.email} or a member of the management team can "
+                                                 f"update this event"},
                                 status=status.HTTP_403_FORBIDDEN)
         else:
-            if user != support_user and user != sales_user and user.user_team != 1:
-                return Response({"Request user": "You're not allowed to update this event."},
+            if user != support_user and user.user_team != 1:
+                return Response({"Request user": f"You're not allowed to update this event."
+                                                 f"Only {support_user.email} or a member of the management team can "
+                                                 f"update this event"},
                                 status=status.HTTP_403_FORBIDDEN)
 
         data_event = {}

@@ -81,10 +81,11 @@ ___
 |  16.| Contract's creation                                                       |     POST     | /clients/{id}/contracts_by_client/          |
 |  17.| Contract's modification                                                   |     PUT      | /clients/{id}/contracts_by_client/{id}/     |
 |  18.| Contract's deletion                                                       |     DELETE   | /clients/{id}/contracts_by_client/{id}/     |
-
-
-
-
+|  19.| Event's information get list - all contracts or by filter                 |     GET      | /events/                                    |
+|  20.| Event's information by id                                                 |     GET      | /events/{id}                                |
+|  21.| Event's creation                                                          |     POST     | /contracts/{id}/event_by_contract/          |
+|  22.| Event's modification                                                      |     PUT      | /contracts/{id}/event_by_contract/{id}/     |
+|  23.| Event's deletion                                                          |     DELETE   | /contracts/{id}/event_by_contract/{id}/     |
 
 |  #  | Filters for /clients/                     | HTTP Method  |    URI                                           |
 |:---:|-------------------------------------------|:------------:|:-------------------------------------------------|
@@ -94,14 +95,16 @@ ___
 
 |  #  | Filters for /contracts/                   | HTTP Method  |    URI                                            |
 |:---:|-------------------------------------------|:------------:|:--------------------------------------------------|
-|  1. | Search by company name                    | HTTP Method  |    /contracts/?company_name=_partial_company_name_|
-|  2. | Search by client email                    | HTTP Method  |    /contracts/?email=_exact_email_                |
-|  3. | Search by date of contract                | HTTP Method  |    /contracts/?date_contract=_yyyy-mm-dd_         |
-|  4. | Search by amount                          | HTTP Method  |    /contracts/?amount=_0123456789_                |
+|  1. | Search by company name                    |  GET         |    /contracts/?company_name=_partial_company_name_|
+|  2. | Search by client email                    |  GET         |    /contracts/?email=_exact_email_                |
+|  3. | Search by date of contract                |  GET         |    /contracts/?date_contract=_yyyy-mm-dd_         |
+|  4. | Search by amount                          |  GET         |    /contracts/?amount=_0123456789_                |
 
 
-|  #  | Filters for /events/                      | HTTP Method  |    URI                                   |
-|:---:|-------------------------------------------|:------------:|:-----------------------------------------|
-|  #  | Search for /clients/                      | HTTP Method  |    URI                                   |
+|  #  | Filters for /events/                      | HTTP Method  |    URI                                            |
+|:---:|-------------------------------------------|:------------:|:--------------------------------------------------|
+|  1. | Search by company name                    |  GET         |    /events/?company_name=_partial_company_name_   |
+|  2. | Search by client email                    |  GET         |    /events/?email=_exact_email_                   |
+|  3. | Search by date of events                  |  GET         |    /events/?date_event=_yyyy-mm-dd_               |
 
 You will find the [Postman documentation here](https://documenter.getpostman.com/view/16915168/UVkmRcZd).
