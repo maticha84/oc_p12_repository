@@ -5,6 +5,10 @@ from authentication.models import User
 
 
 class Company(models.Model):
+    """
+    Company objects.
+    could have several clients
+    """
     name = models.CharField(max_length=250, verbose_name="Company Name", unique=True)
 
     class Meta:
@@ -15,6 +19,12 @@ class Company(models.Model):
 
 
 class Client(models.Model):
+    """
+    Client object.
+    One client has one company.
+    One client could have several contracts
+    One client has one sales contact
+    """
     first_name = models.CharField(max_length=25, verbose_name="First Name", blank=False)
     last_name = models.CharField(max_length=25, verbose_name="Last Name", blank=False)
     email = models.EmailField(max_length=100, verbose_name='E-Mail', unique=True)
@@ -36,6 +46,12 @@ class Client(models.Model):
 
 
 class Contract(models.Model):
+    """
+    Contract object
+    One contract has one sales contact
+    One contract has one Client
+    One contract could has one event
+    """
     date_created = models.DateTimeField(auto_now_add=True, verbose_name='Date Created')
     date_updated = models.DateTimeField(auto_now=True, verbose_name='Date Updated')
     status = models.BooleanField(default=False, verbose_name="Active contract")
@@ -54,6 +70,12 @@ class Contract(models.Model):
 
 
 class Event(models.Model):
+    """
+    Event object
+    One event has one contract, one sales contact
+    One event could has one support event.
+    An event without support contact is 'not attibuted' status by default.
+    """
     CHOICES_STATUS = (
         (1, 'Not attributed'),
         (2, 'Begin'),

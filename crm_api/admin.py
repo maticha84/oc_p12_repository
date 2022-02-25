@@ -6,6 +6,12 @@ from .models import Company, Client, Contract, Event
 
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
+    """
+        Registration of Company objects on the administration page.
+        Setting permissions for users :
+        - only the management team has the right to connect to the administration page
+        - the administration team has modification rights only.
+    """
     list_display = ('name',)
 
     list_filter = ('name',)
@@ -38,6 +44,12 @@ class CompanyAdmin(admin.ModelAdmin):
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
+    """
+        Registration of Client objects on the administration page.
+        Setting permissions for users :
+        - only the management team has the right to connect to the administration page
+        - the administration team has modification rights only.
+    """
     readonly_fields = ('is_active', )
     list_display = ('email', 'first_name', 'last_name', 'phone',
                     'mobile', 'company', 'sales_contact', 'is_active')
@@ -72,6 +84,12 @@ class ClientAdmin(admin.ModelAdmin):
 
 @admin.register(Contract)
 class ContractAdmin(admin.ModelAdmin):
+    """
+        Registration of Contract objects on the administration page.
+        Setting permissions for users :
+        - only the management team has the right to connect to the administration page
+        - the administration team has modification rights only.
+    """
     readonly_fields = ('status', 'client', )
     list_display = ('id', 'date_created', 'date_updated', 'client', 'sales_contact',
                     'amount', 'payment_due', 'status')
@@ -106,6 +124,12 @@ class ContractAdmin(admin.ModelAdmin):
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
+    """
+        Registration of Event objects on the administration page.
+        Setting permissions for users :
+        - only the management team has the right to connect to the administration page
+        - the administration team has modification rights only.
+    """
     readonly_fields = ('contract', 'date_created', 'date_updated')
     list_display = ('id', 'date_created', 'date_updated', 'contract', 'status', 'date_event',
                     'support_contact', 'attendees', 'note')
@@ -138,6 +162,10 @@ class EventAdmin(admin.ModelAdmin):
         return False
 
     def save_model(self, request, obj, form, change):
+        """
+        object status 1 : event not attributed
+        object status 2 : event begin
+        """
         if obj.support_contact is None:
             obj.status = 1
         elif obj.support_contact is not None and obj.status == 1:

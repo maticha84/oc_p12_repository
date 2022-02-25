@@ -5,7 +5,9 @@ from authentication.models import User
 
 
 class IsAuthenticated(BasePermission):
-
+    """
+        Permission for authenticated users
+    """
     def has_permission(self, request, view):
         """
         Acces only for authenticated users
@@ -13,58 +15,10 @@ class IsAuthenticated(BasePermission):
         return bool(request.user and request.user.is_authenticated)
 
 
-class IsManagementTeam(BasePermission):
-    """
-    Access only for management team users
-    """
-    message = "You are not a member of the management team. You do not have access authorization."
-
-    def has_permission(self, request, view):
-
-        user = request.user
-        team = user.user_team
-
-        if not team == 1:
-            return False
-        else:
-            return True
-
-
-class IsSupportTeam(BasePermission):
-    """
-        Access only for support team users
-        """
-    message = "You are not a member of the support team. You do not have access authorization."
-
-    def has_permission(self, request, view):
-
-        user = request.user
-        team = user.user_team
-
-        if not team == 2:
-            return False
-        else:
-            return True
-
-
-class IsSalesTeam(BasePermission):
-    """
-        Access only for sales team users
-        """
-    message = "You are not a member of the sales team. You do not have access authorization."
-
-    def has_permission(self, request, view):
-
-        user = request.user
-        team = user.user_team
-
-        if not team == 3:
-            return False
-        else:
-            return True
-
-
 class IsSalesView(BasePermission):
+    """
+        Permission for sales users, in charge of client or contract
+    """
     message = "You are not allowed to do this action."
 
     def has_permission(self, request, view):
@@ -85,6 +39,9 @@ class IsSalesView(BasePermission):
 
 
 class IsEventView(BasePermission):
+    """
+        Permission for support or sales users in charge of event
+    """
     message = "You are not allowed to do this action."
 
     def has_permission(self, request, view):
