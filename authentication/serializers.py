@@ -4,6 +4,9 @@ from .models import User
 
 
 class RegistrationSerializer(ModelSerializer):
+    """
+    serializer for the registration's user.
+    """
     confirm_password = CharField(max_length=128, style={'input_type': 'password'}, write_only=True)
 
     class Meta:
@@ -17,6 +20,9 @@ class RegistrationSerializer(ModelSerializer):
         }
 
     def validate_password(self, password):
+        """
+        validate the complexity of password
+        """
         password_validation.validate_password(password, self.instance)
         return password
 
@@ -46,6 +52,9 @@ class RegistrationSerializer(ModelSerializer):
 
 
 class UserSerializer(ModelSerializer):
+    """
+    User serializer
+    """
     class Meta:
         model = User
         fields = ['email', 'first_name', 'last_name', 'user_team']

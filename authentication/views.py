@@ -5,6 +5,9 @@ from .permissions import IsAuthenticated, IsManagementTeam
 
 
 class RegistrationViewset(ModelViewSet):
+    """
+    Viewset for registration user.
+    """
     serializer_class = RegistrationSerializer
     permission_classes = (IsAuthenticated, IsManagementTeam)
     http_method_names = ['post', ]

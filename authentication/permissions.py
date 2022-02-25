@@ -5,7 +5,9 @@ from .models import User
 
 
 class IsAuthenticated(BasePermission):
-
+    """
+    Permission for authenticated users
+    """
     def has_permission(self, request, view):
         """
         Acces only for authenticated users
@@ -16,6 +18,7 @@ class IsAuthenticated(BasePermission):
 class IsManagementTeam(BasePermission):
     """
     Access only for management team users
+    Permission for team management users
     """
     message = "You are not a member of the management team. You do not have access authorization."
 

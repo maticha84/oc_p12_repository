@@ -3,6 +3,9 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
 class ManageUser(BaseUserManager):
+    """
+    Customisation of the ManageUser class for creating users and super users.
+    """
     def create_user(self, email, password=None, **kwargs):
         if not email:
             raise ValueError("Email is missing")
@@ -21,6 +24,10 @@ class ManageUser(BaseUserManager):
 
 
 class User(AbstractBaseUser):
+    """
+    Customisation of the User object using the AbstractBaseUser class.
+    Allows to choose the team of each user, and to stipulate that the login will be done by email and not by username
+    """
     USER_TEAM_CHOICES = (
         (1, 'management'),
         (2, 'support'),
