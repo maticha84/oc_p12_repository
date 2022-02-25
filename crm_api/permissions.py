@@ -93,12 +93,8 @@ class IsEventView(BasePermission):
         if view.action in ['list', 'retrieve', 'update']:
             return True
 
-        elif view.action in ['create']:
+        elif view.action in ['create', 'destroy']:
             if not team == 3:
                 return False
             return True
 
-        elif view.action in ['destroy']:
-            if team == 2 or team == 3:
-                return True
-            return False

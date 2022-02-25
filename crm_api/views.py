@@ -274,15 +274,22 @@ class ContractByClientViewset(ModelViewSet):
             return Response({"Sales User": f"You are not responsible for this client. You cannot delete a contract"
                                            f"to it. Only {contract.sales_contact.email} can do this"},
                             status=status.HTTP_403_FORBIDDEN)
+        try:
+            contract.delete()
+            if len(client.client_contract.all()) == 0:
+                client.is_active = False
+                client.save()
+            return Response(
+                {'Deleted': f'The contract with id {kwargs["pk"]} has been deleted successfully'},
+                status=status.HTTP_204_NO_CONTENT
+            )
+        except RestrictedError:
+            return Response(
+                {'Restriction error': f'Event is attached to this contract. '
+                                      f'Delete the associated event to remove this contract.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
-        contract.delete()
-        if len(client.client_contract.all()) == 0:
-            client.is_active = False
-            client.save()
-        return Response(
-            {'Deleted': f'The contract with id {kwargs["pk"]} has been deleted successfully'},
-            status=status.HTTP_204_NO_CONTENT
-        )
 
 
 class EventViewset(ModelViewSet):
@@ -392,7 +399,7 @@ class EventByContractViewset(ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, *args, **kwargs):
-        event_data = request.data
+
         user = request.user
         event = Event.objects.filter(pk=kwargs['pk'], contract=kwargs['contract_id'])
 
@@ -402,19 +409,12 @@ class EventByContractViewset(ModelViewSet):
                             status=status.HTTP_404_NOT_FOUND)
         event = event.get()
         contract = event.contract
-        support_user = event.support_contact
         sales_user = event.contract.sales_contact
 
-        if support_user is None:
-            if user != sales_user:
-                return Response({"Request user": f"You're not allowed to delete this event. "
-                                                 f"Only {sales_user.email} is allowed to delete this event."},
-                                status=status.HTTP_403_FORBIDDEN)
-        else:
-            if user != support_user:
-                return Response({"Request user": f"You're not allowed to delete this event. "
-                                                 f"Only {support_user.email} is allowed to delete this event."},
-                                status=status.HTTP_403_FORBIDDEN)
+        if user != sales_user:
+            return Response({"Request user": f"You're not allowed to delete this event. "
+                                             f"Only {sales_user.email} is allowed to delete this event."},
+                            status=status.HTTP_403_FORBIDDEN)
 
         event.delete()
         contract.status = False

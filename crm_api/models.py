@@ -62,7 +62,7 @@ class Event(models.Model):
 
     )
     status = models.PositiveSmallIntegerField(choices=CHOICES_STATUS, verbose_name="Status", default=1)
-    contract = models.OneToOneField(to=Contract, on_delete=models.CASCADE, related_name='contract_event')
+    contract = models.OneToOneField(to=Contract, on_delete=models.RESTRICT, related_name='contract_event')
     support_contact = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, null=True,
                                         blank=True, limit_choices_to={'user_team': 2}, related_name="support")
     date_created = models.DateTimeField(auto_now_add=True, verbose_name='Date Created')
