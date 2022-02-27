@@ -26,16 +26,28 @@ from authentication.models import User
 
 
 class CompanyViewset(ModelViewSet):
+    """
+    Class for company viewset
+    """
     serializer_class = CompanySerializer
     permission_classes = (IsAuthenticated, IsSalesView)
 
     def get_queryset(self):
+        """
+        Only authenticated users could get inforpmation about company object
+        """
         user = self.request.user
         companies = Company.objects.all()
 
         return companies
 
     def create(self, request, *args, **kwargs):
+        """
+        Request method : POST
+        Only sales member could create a new company.
+        If serializer company is OK, creation of a Company object.
+        :return: serializer.data or serializer.error
+        """
         company_data = request.data
         serializer = CompanySerializer(data=company_data)
 
@@ -48,6 +60,12 @@ class CompanyViewset(ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
+        """
+        Only sales member could update a company object.
+        if company object exists, serializer is tested
+        If serializer company is OK, update of a Company object.
+        :return: serializer.data or serializer.error
+        """
         company = Company.objects.filter(pk=kwargs['pk'])
         if not company:
             return Response(
@@ -70,6 +88,12 @@ class CompanyViewset(ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, *args, **kwargs):
+        """
+        Only sales member could delete a company object.
+        if company object exists, serializer is tested
+        if clients are linked to company object, deletion is restricted.
+        :return: serializer.data or serializer.error
+        """
         company = Company.objects.filter(pk=kwargs['pk'])
         if not company:
             return Response(
@@ -93,6 +117,10 @@ class CompanyViewset(ModelViewSet):
 
 
 class ClientViewset(ModelViewSet):
+    """
+    Class for view Client. Only get or retrieve http method.
+    Only authenticated user could have access to.
+    """
     serializer_class = ClientListSerializer
     permission_classes = (IsAuthenticated, IsSalesView)
     http_method_names = ['get', 'retrieve', ]
@@ -107,11 +135,18 @@ class ClientViewset(ModelViewSet):
 
 
 class ClientByCompanyViewset(ModelViewSet):
+    """
+    Class for client management. Only post, put or delete http method.
+    Access for only authenticated user, with sales permission.
+    """
     serializer_class = ClientListSerializer
     permission_classes = (IsAuthenticated, IsSalesView)
     http_method_names = ['post', 'put', 'delete']
 
     def create(self, request, *args, **kwargs):
+        """
+        Creation of a Client object. Only a sales meber could do this action
+        """
         client_data = request.data
 
         company = Company.objects.filter(id=kwargs['company_id'])
@@ -129,6 +164,10 @@ class ClientByCompanyViewset(ModelViewSet):
         return Response(client_serializer.errors, status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
+        """
+        Update Client object. Only sales member responsible of the client object could update this,
+        or a member of management team.
+        """
         client_request_data = request.data
         client_to_modify = Client.objects.filter(pk=kwargs['pk'], company=kwargs['company_id'])
         user = request.user
@@ -172,6 +211,10 @@ class ClientByCompanyViewset(ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, *args, **kwargs):
+        """
+         Update Client object. Only sales member responsible of the client object could update this
+         if contracts are linked to a client object, deleting is restricted
+        """
         user = request.user
         client_to_destroy = Client.objects.filter(pk=kwargs['pk'], company=kwargs['company_id'])
 
@@ -200,6 +243,10 @@ class ClientByCompanyViewset(ModelViewSet):
 
 
 class ContractViewset(ModelViewSet):
+    """
+    Class for view Contract. Only get or retrieve http method.
+    Only authenticated user could have access to.
+    """
     serializer_class = ContractListSerializer
     permission_classes = (IsAuthenticated, IsSalesView)
     http_method_names = ['get', 'retrieve', ]
@@ -214,11 +261,20 @@ class ContractViewset(ModelViewSet):
 
 
 class ContractByClientViewset(ModelViewSet):
+    """
+    Class for contract management. Only post, put or delete http method.
+    Access for only authenticated user, with sales permission.
+    """
     serializer_class = ContractListSerializer
     permission_classes = (IsAuthenticated, IsSalesView)
     http_method_names = ['post', 'put', 'delete']
 
     def create(self, request, *args, **kwargs):
+        """
+        Creation of a contrct object.
+        Only member sales responsible of the client could create a contract linked to the client.
+        If a contract is created, the client will be activated status.
+        """
         contract_data = request.data
         client = Client.objects.filter(id=kwargs['client_id'])
         if not client:
@@ -240,6 +296,9 @@ class ContractByClientViewset(ModelViewSet):
         return Response(contract_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
+        """
+        Only member sales responsible of contract could update a contract, or a member of management team.
+        """
         contract_data = request.data
         contract = Contract.objects.filter(pk=kwargs['pk'], client=kwargs['client_id'])
         if not contract:
@@ -259,6 +318,10 @@ class ContractByClientViewset(ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, *args, **kwargs):
+        """
+        Onlys sales member responsible of the contract could be delete a contract.
+        If an event is linked to a contract, deleting is restricted.
+        """
         user = request.user
         contract = Contract.objects.filter(pk=kwargs['pk'], client=kwargs['client_id'])
 
@@ -270,7 +333,7 @@ class ContractByClientViewset(ModelViewSet):
         contract = contract.get()
         client = contract.client
 
-        if contract.sales_contact != request.user:
+        if contract.sales_contact != user:
             return Response({"Sales User": f"You are not responsible for this client. You cannot delete a contract"
                                            f"to it. Only {contract.sales_contact.email} can do this"},
                             status=status.HTTP_403_FORBIDDEN)
@@ -291,8 +354,11 @@ class ContractByClientViewset(ModelViewSet):
             )
 
 
-
 class EventViewset(ModelViewSet):
+    """
+    Class for view Event. Only get or retrieve http method.
+    Only authenticated user could have access to.
+    """
     serializer_class = EventListSerializer
     permission_classes = (IsAuthenticated, IsEventView)
     http_method_names = ['get', 'retrieve', ]
@@ -307,11 +373,20 @@ class EventViewset(ModelViewSet):
 
 
 class EventByContractViewset(ModelViewSet):
+    """
+    Class for client management. Only post, put or delete http method.
+    Access for only authenticated user, with event permission.
+    """
     serializer_class = EventListSerializer
     permission_classes = (IsAuthenticated, IsEventView)
     http_method_names = ['post', 'put', 'delete']
 
     def create(self, request, *args, **kwargs):
+        """
+        onslu membersales responsible of contract could create an event.
+        it will activate contract
+        Only one event per contract.
+        """
         event_data = request.data
         contract = Contract.objects.filter(id=kwargs['contract_id'])
         if not contract:

@@ -5,6 +5,9 @@ from authentication.serializers import UserSerializer
 
 
 class CompanySerializer(ModelSerializer):
+    """
+    serializer for company
+    """
     class Meta:
         model = Company
         fields = ['name']
@@ -16,6 +19,9 @@ class CompanySerializer(ModelSerializer):
 
 
 class ClientSerializer(ModelSerializer):
+    """
+        Serializer used for creation of Client
+    """
     class Meta:
         model = Client
         fields = ['first_name', 'last_name', 'email', 'phone', 'mobile', 'date_created', 'date_updated',
@@ -52,6 +58,9 @@ class ClientSerializer(ModelSerializer):
 
 
 class ClientListSerializer(ModelSerializer):
+    """
+        Serializer used for get all information of a client
+    """
     client_company = SerializerMethodField()
     sales = SerializerMethodField()
 
@@ -77,6 +86,9 @@ class ClientListSerializer(ModelSerializer):
 
 
 class ContractSerializer(ModelSerializer):
+    """
+        Serializer used for creation of Contract
+    """
     class Meta:
         model = Contract
         fields = ['date_created', 'date_updated', 'status', 'amount', 'payment_due', 'sales_contact', 'client']
@@ -94,6 +106,9 @@ class ContractSerializer(ModelSerializer):
 
 
 class ContractListSerializer(ModelSerializer):
+    """
+        Serializer used for get all information of a contract
+    """
     client_contract = SerializerMethodField()
     sales = SerializerMethodField()
 
@@ -114,6 +129,9 @@ class ContractListSerializer(ModelSerializer):
 
 
 class EventSerializer(ModelSerializer):
+    """
+        Serializer used for creation of Event
+    """
     class Meta:
         model = Event
         fields = ['status', 'contract', 'support_contact', 'date_created',
@@ -133,6 +151,9 @@ class EventSerializer(ModelSerializer):
 
 
 class EventListSerializer(ModelSerializer):
+    """
+        Serializer used for get all information of an event
+    """
     contract_event = SerializerMethodField()
     support = SerializerMethodField()
 
