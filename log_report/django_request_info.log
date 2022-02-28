@@ -290,3 +290,161 @@ WARNING 2022-02-25 15:41:22,236 log 23180 5700 Unauthorized: /contracts/19/event
 WARNING 2022-02-25 15:41:29,639 log 23180 5700 Unauthorized: /contracts/19/event_by_contract/18/
 WARNING 2022-02-25 15:46:21,390 log 9304 21820 Forbidden: /contracts/19/event_by_contract/18/
 WARNING 2022-02-25 15:46:49,379 log 9304 21820 Forbidden: /contracts/19/event_by_contract/18/
+WARNING 2022-02-28 12:17:30,160 log 25268 1076 Not Found: /favicon.ico
+WARNING 2022-02-28 12:25:51,263 log 25268 26536 Not Found: /
+WARNING 2022-02-28 12:25:51,316 log 25268 26536 Not Found: /favicon.ico
+WARNING 2022-02-28 12:27:04,524 log 25268 24224 Not Found: /favicon.ico
+ERROR 2022-02-28 12:30:44,809 log 17472 18700 Internal Server Error: /management/authentication/user/8/change/
+Traceback (most recent call last):
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\options.py", line 716, in get_form
+    return modelform_factory(self.model, **defaults)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\forms\models.py", line 561, in modelform_factory
+    return type(form)(class_name, (form,), form_class_attrs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\forms\models.py", line 274, in __new__
+    raise FieldError(message)
+django.core.exceptions.FieldError: Unknown field(s) (password2) specified for User
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\options.py", line 622, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\utils\decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\views\decorators\cache.py", line 57, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\sites.py", line 236, in inner
+    return view(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\options.py", line 1673, in change_view
+    return self.changeform_view(request, object_id, form_url, extra_context)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\utils\decorators.py", line 43, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\utils\decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\options.py", line 1549, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\options.py", line 1583, in _changeform_view
+    ModelForm = self.get_form(
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\auth\admin.py", line 80, in get_form
+    return super().get_form(request, obj, **defaults)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\options.py", line 718, in get_form
+    raise FieldError(
+django.core.exceptions.FieldError: Unknown field(s) (password2) specified for User. Check fields/fieldsets/exclude attributes of class UserAdmin.
+ERROR 2022-02-28 12:31:50,472 log 17608 20776 Internal Server Error: /management/authentication/user/8/change/
+Traceback (most recent call last):
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\options.py", line 716, in get_form
+    return modelform_factory(self.model, **defaults)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\forms\models.py", line 561, in modelform_factory
+    return type(form)(class_name, (form,), form_class_attrs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\forms\models.py", line 274, in __new__
+    raise FieldError(message)
+django.core.exceptions.FieldError: Unknown field(s) (password2, new_password) specified for User
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\options.py", line 622, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\utils\decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\views\decorators\cache.py", line 57, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\sites.py", line 236, in inner
+    return view(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\options.py", line 1673, in change_view
+    return self.changeform_view(request, object_id, form_url, extra_context)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\utils\decorators.py", line 43, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\utils\decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\options.py", line 1549, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\options.py", line 1583, in _changeform_view
+    ModelForm = self.get_form(
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\auth\admin.py", line 80, in get_form
+    return super().get_form(request, obj, **defaults)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\options.py", line 718, in get_form
+    raise FieldError(
+django.core.exceptions.FieldError: Unknown field(s) (password2, new_password) specified for User. Check fields/fieldsets/exclude attributes of class UserAdmin.
+ERROR 2022-02-28 12:32:54,497 log 17608 20776 Internal Server Error: /management/authentication/user/8/change/
+Traceback (most recent call last):
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\options.py", line 716, in get_form
+    return modelform_factory(self.model, **defaults)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\forms\models.py", line 561, in modelform_factory
+    return type(form)(class_name, (form,), form_class_attrs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\forms\models.py", line 274, in __new__
+    raise FieldError(message)
+django.core.exceptions.FieldError: Unknown field(s) (password2, new_password) specified for User
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\options.py", line 622, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\utils\decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\views\decorators\cache.py", line 57, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\sites.py", line 236, in inner
+    return view(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\options.py", line 1673, in change_view
+    return self.changeform_view(request, object_id, form_url, extra_context)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\utils\decorators.py", line 43, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\utils\decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\options.py", line 1549, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\options.py", line 1583, in _changeform_view
+    ModelForm = self.get_form(
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\auth\admin.py", line 80, in get_form
+    return super().get_form(request, obj, **defaults)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\options.py", line 718, in get_form
+    raise FieldError(
+django.core.exceptions.FieldError: Unknown field(s) (password2, new_password) specified for User. Check fields/fieldsets/exclude attributes of class UserAdmin.
+ERROR 2022-02-28 12:32:56,768 log 22236 25336 Internal Server Error: /management/authentication/user/8/change/
+Traceback (most recent call last):
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\options.py", line 622, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\utils\decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\views\decorators\cache.py", line 57, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\sites.py", line 236, in inner
+    return view(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\options.py", line 1673, in change_view
+    return self.changeform_view(request, object_id, form_url, extra_context)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\utils\decorators.py", line 43, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\utils\decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\options.py", line 1549, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\options.py", line 1583, in _changeform_view
+    ModelForm = self.get_form(
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\auth\admin.py", line 80, in get_form
+    return super().get_form(request, obj, **defaults)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\contrib\admin\options.py", line 716, in get_form
+    return modelform_factory(self.model, **defaults)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\forms\models.py", line 561, in modelform_factory
+    return type(form)(class_name, (form,), form_class_attrs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\forms\models.py", line 272, in __new__
+    message = message % (', '.join(missing_fields),
+TypeError: sequence item 0: expected str instance, CharField found
+WARNING 2022-02-28 12:34:27,401 log 8040 13772 Not Found: /favicon.ico
