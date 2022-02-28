@@ -383,7 +383,7 @@ class EventByContractViewset(ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         """
-        onslu membersales responsible of contract could create an event.
+        onlu member sales responsible of contract could create an event.
         it will activate contract
         Only one event per contract.
         """
@@ -414,6 +414,14 @@ class EventByContractViewset(ModelViewSet):
         return Response(event_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
+        """
+        Only member of management team could assign an event to a support contact.
+        If event is assigned, only member of team management or support contact linked to this event could update this.
+        If event is not assigned,  only member of team management or sales contact linked to this event could
+        update this.
+        Only support contact could modify status event.
+        If no support contact : status is "not attributed" (1)
+        """
         event_data = request.data
         user = request.user
         event = Event.objects.filter(pk=kwargs['pk'], contract=kwargs['contract_id'])
@@ -474,7 +482,11 @@ class EventByContractViewset(ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, *args, **kwargs):
-
+        """
+        If event is assigned, only support contact linked to this event could delete this.
+        If event is not assigned,  only sales contact linked to this event could delete this.
+        when an event is deleted, contract assigned before has a status = False
+        """
         user = request.user
         event = Event.objects.filter(pk=kwargs['pk'], contract=kwargs['contract_id'])
 
