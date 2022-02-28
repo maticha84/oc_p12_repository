@@ -1,0 +1,292 @@
+WARNING Unauthorized: /clients/
+WARNING 2022-02-21 10:01:56,667 log 5572 1804 Unauthorized: /clients/
+WARNING 2022-02-21 11:24:06,564 log 15588 3088 Not Found: /
+WARNING 2022-02-22 09:38:41,359 log 9996 14228 Bad Request: /login/
+WARNING 2022-02-22 09:38:47,436 log 9996 14228 Unauthorized: /login/
+WARNING 2022-02-22 09:41:05,434 log 9996 14228 Bad Request: /login/refresh/
+WARNING 2022-02-22 09:41:58,574 log 9996 14228 Unauthorized: /login/refresh/
+WARNING 2022-02-22 09:54:43,236 log 9996 14228 Unauthorized: /companies/
+WARNING 2022-02-22 09:54:53,209 log 9996 14228 Unauthorized: /companies/
+WARNING 2022-02-22 09:58:31,793 log 9996 14228 Forbidden: /companies/
+WARNING 2022-02-22 09:58:57,162 log 9996 14228 Unauthorized: /companies/
+WARNING 2022-02-22 10:12:21,464 log 9996 14228 Unauthorized: /companies/14/
+WARNING 2022-02-22 10:12:47,585 log 9996 14228 Unauthorized: /companies/14/
+WARNING 2022-02-22 10:12:58,115 log 9996 14228 Forbidden: /companies/14/
+WARNING 2022-02-22 10:13:35,233 log 9996 14228 Unauthorized: /login/
+WARNING 2022-02-22 10:13:46,085 log 9996 14228 Unauthorized: /login/
+WARNING 2022-02-22 10:17:47,208 log 9996 14228 Forbidden: /companies/14/
+WARNING 2022-02-22 10:17:56,432 log 9996 14228 Unauthorized: /companies/14/
+WARNING 2022-02-22 10:18:09,579 log 9996 14228 Forbidden: /companies/12/
+WARNING 2022-02-22 10:18:41,178 log 9996 14228 Bad Request: /companies/12/
+WARNING 2022-02-22 10:29:56,190 log 9996 14228 Unauthorized: /companies/12/
+WARNING 2022-02-22 11:20:00,048 log 9996 14228 Unauthorized: /clients/
+WARNING 2022-02-22 11:20:13,602 log 9996 14228 Unauthorized: /clients/54/
+WARNING 2022-02-22 11:20:31,248 log 9996 14228 Unauthorized: /clients/
+WARNING 2022-02-22 11:20:32,824 log 9996 14228 Unauthorized: /clients/
+WARNING 2022-02-22 11:20:39,012 log 9996 14228 Unauthorized: /clients/
+ERROR 2022-02-22 11:27:24,196 log 10404 28776 Internal Server Error: /clients/
+Traceback (most recent call last):
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\generics.py", line 150, in filter_queryset
+    queryset = backend().filter_queryset(self.request, queryset, self)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django_filters\rest_framework\backends.py", line 96, in filter_queryset
+    return filterset.qs
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django_filters\filterset.py", line 243, in qs
+    qs = self.filter_queryset(qs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django_filters\filterset.py", line 230, in filter_queryset
+    queryset = self.filters[name].filter(queryset, value)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django_filters\filters.py", line 146, in filter
+    qs = self.get_method(qs)(**{lookup: value})
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\db\models\query.py", line 974, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\db\models\query.py", line 992, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\db\models\query.py", line 999, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\db\models\sql\query.py", line 1375, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\db\models\sql\query.py", line 1396, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\db\models\sql\query.py", line 1329, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\db\models\sql\query.py", line 1165, in build_lookup
+    lhs = self.try_transform(lhs, name)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\db\models\sql\query.py", line 1216, in try_transform
+    raise FieldError(
+django.core.exceptions.FieldError: Unsupported lookup 'email' for EmailField or join on the field not permitted.
+ERROR 2022-02-22 11:27:48,830 log 30168 19652 Internal Server Error: /clients/
+Traceback (most recent call last):
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\generics.py", line 150, in filter_queryset
+    queryset = backend().filter_queryset(self.request, queryset, self)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django_filters\rest_framework\backends.py", line 96, in filter_queryset
+    return filterset.qs
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django_filters\filterset.py", line 243, in qs
+    qs = self.filter_queryset(qs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django_filters\filterset.py", line 230, in filter_queryset
+    queryset = self.filters[name].filter(queryset, value)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django_filters\filters.py", line 146, in filter
+    qs = self.get_method(qs)(**{lookup: value})
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\db\models\query.py", line 974, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\db\models\query.py", line 992, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\db\models\query.py", line 999, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\db\models\sql\query.py", line 1375, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\db\models\sql\query.py", line 1396, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\db\models\sql\query.py", line 1329, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\db\models\sql\query.py", line 1165, in build_lookup
+    lhs = self.try_transform(lhs, name)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\db\models\sql\query.py", line 1216, in try_transform
+    raise FieldError(
+django.core.exceptions.FieldError: Unsupported lookup 'email' for EmailField or join on the field not permitted.
+WARNING 2022-02-22 11:36:43,970 log 18856 13456 Method Not Allowed: /companies/12/client_by_company/
+ERROR 2022-02-22 11:38:45,113 log 18856 13456 Internal Server Error: /companies/12/client_by_company
+Traceback (most recent call last):
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\utils\deprecation.py", line 125, in __call__
+    response = self.process_request(request)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\middleware\common.py", line 54, in process_request
+    path = self.get_full_path_with_slash(request)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\middleware\common.py", line 88, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to 127.0.0.1:8000/companies/12/client_by_company/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+WARNING 2022-02-22 11:38:54,594 log 18856 18948 Unauthorized: /companies/12/client_by_company/
+WARNING 2022-02-22 11:39:18,848 log 18856 18948 Unauthorized: /companies/12/client_by_company/
+WARNING 2022-02-22 11:39:55,364 log 18856 18948 Forbidden: /companies/12/client_by_company/
+WARNING 2022-02-22 11:41:51,331 log 18856 18948 Bad Request: /companies/12/client_by_company/
+WARNING 2022-02-22 11:52:20,536 log 22616 18528 Unauthorized: /companies/12/client_by_company/73/
+WARNING 2022-02-22 11:52:28,675 log 22616 18528 Unauthorized: /companies/12/client_by_company/73/
+WARNING 2022-02-22 11:53:59,930 log 22616 18528 Forbidden: /companies/12/client_by_company/73/
+WARNING 2022-02-22 11:54:43,343 log 22616 18528 Forbidden: /companies/12/client_by_company/73/
+WARNING 2022-02-22 11:56:58,561 log 20952 26952 Forbidden: /companies/12/client_by_company/73/
+WARNING 2022-02-22 11:58:37,030 log 20952 26952 Forbidden: /companies/12/client_by_company/73/
+WARNING 2022-02-22 11:59:04,458 log 20952 26952 Forbidden: /companies/12/client_by_company/73/
+WARNING 2022-02-22 12:00:02,012 log 20952 26952 Bad Request: /companies/12/client_by_company/73/
+WARNING 2022-02-22 12:01:06,553 log 20952 26952 Bad Request: /companies/12/client_by_company/73/
+WARNING 2022-02-22 15:36:53,173 log 20952 26952 Unauthorized: /companies/12/client_by_company/73/
+WARNING 2022-02-22 15:37:01,260 log 20952 26952 Unauthorized: /companies/12/client_by_company/73/
+WARNING 2022-02-22 15:37:26,955 log 20952 26952 Forbidden: /companies/12/client_by_company/73/
+WARNING 2022-02-22 15:38:03,749 log 20952 26952 Forbidden: /companies/12/client_by_company/73/
+WARNING 2022-02-22 15:39:46,819 log 20952 26952 Method Not Allowed: /clients/54/contracts_by_client/
+WARNING 2022-02-22 15:40:04,150 log 20952 26952 Method Not Allowed: /contracts/5/event_by_contract/
+WARNING 2022-02-22 15:46:42,767 log 20952 26952 Unauthorized: /contracts/
+WARNING 2022-02-22 15:46:49,468 log 20952 26952 Unauthorized: /contracts/
+WARNING 2022-02-22 16:04:43,975 log 20952 26952 Unauthorized: /clients/71/contracts_by_client/
+WARNING 2022-02-22 16:04:50,565 log 20952 26952 Unauthorized: /clients/71/contracts_by_client/
+ERROR 2022-02-22 16:10:28,432 log 29780 20280 Internal Server Error: /clients/71/contracts_by_client/
+Traceback (most recent call last):
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\crm_api\views.py", line 231, in create
+    f"to it. Only {client.sales_contact__email} can do this"},
+AttributeError: 'Client' object has no attribute 'sales_contact__email'
+ERROR 2022-02-22 16:10:44,740 log 29780 20280 Internal Server Error: /clients/71/contracts_by_client/
+Traceback (most recent call last):
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\crm_api\views.py", line 231, in create
+    f"to it. Only {client.sales_contact_email} can do this"},
+AttributeError: 'Client' object has no attribute 'sales_contact__email'
+ERROR 2022-02-22 16:10:47,308 log 14176 14676 Internal Server Error: /clients/71/contracts_by_client/
+Traceback (most recent call last):
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\crm_api\views.py", line 231, in create
+    f"to it. Only {client.sales_contact_email} can do this"},
+AttributeError: 'Client' object has no attribute 'sales_contact_email'
+ERROR 2022-02-22 16:11:09,750 log 14176 14676 Internal Server Error: /clients/71/contracts_by_client/
+Traceback (most recent call last):
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\crm_api\views.py", line 231, in create
+    f"to it. Only {client.sales_contact_email} can do this"},
+AttributeError: 'Client' object has no attribute 'sales_contact_email'
+ERROR 2022-02-22 16:11:13,068 log 14176 14676 Internal Server Error: /clients/71/contracts_by_client/
+Traceback (most recent call last):
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Git\oc_p12_repository\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Git\oc_p12_repository\crm_api\views.py", line 231, in create
+    f"to it. Only {client.sales_contact_email} can do this"},
+AttributeError: 'Client' object has no attribute 'sales_contact_email'
+WARNING 2022-02-22 16:11:16,923 log 18124 23984 Forbidden: /clients/71/contracts_by_client/
+WARNING 2022-02-22 16:12:32,483 log 18124 23984 Forbidden: /clients/71/contracts_by_client/
+WARNING 2022-02-22 16:15:05,172 log 18124 23984 Unauthorized: /clients/71/contracts_by_client/18/
+WARNING 2022-02-23 16:10:14,333 log 13676 18800 Unauthorized: /clients/71/contracts_by_client/18/
+WARNING 2022-02-23 16:12:43,986 log 24024 13696 Forbidden: /clients/71/contracts_by_client/18/
+WARNING 2022-02-23 16:13:47,563 log 24024 13696 Not Found: /contracts/email=client1@client1.fr
+WARNING 2022-02-23 16:18:31,266 log 22144 27140 Not Found: /clients/{id}/contracts_by_client/
+WARNING 2022-02-23 16:18:58,044 log 22144 27140 Forbidden: /clients/71/contracts_by_client/18/
+WARNING 2022-02-23 16:20:33,244 log 25568 18160 Forbidden: /clients/71/contracts_by_client/18/
+WARNING 2022-02-23 16:20:59,910 log 25568 18160 Forbidden: /clients/71/contracts_by_client/18/
+WARNING 2022-02-23 16:28:39,601 log 20832 868 Forbidden: /clients/71/contracts_by_client/18/
+WARNING 2022-02-23 16:28:52,645 log 20832 868 Unauthorized: /clients/71/contracts_by_client/18/
+WARNING 2022-02-23 16:28:58,702 log 20832 868 Unauthorized: /clients/71/contracts_by_client/18/
+WARNING 2022-02-23 16:29:32,940 log 20832 868 Forbidden: /clients/71/contracts_by_client/18/
+WARNING 2022-02-23 16:30:01,055 log 20832 868 Forbidden: /clients/71/contracts_by_client/18/
+WARNING 2022-02-24 15:10:08,321 log 1820 20596 Unauthorized: /events/
+WARNING 2022-02-24 15:10:14,665 log 1820 20596 Unauthorized: /events/
+WARNING 2022-02-24 15:25:33,782 log 20432 14812 Unauthorized: /contracts/5/event_by_contract/
+WARNING 2022-02-24 15:25:41,045 log 20432 14812 Unauthorized: /contracts/5/event_by_contract/
+WARNING 2022-02-24 15:26:15,269 log 20432 14812 Not Found: /contracts/5/event_by_contract/
+WARNING 2022-02-24 15:26:39,354 log 20432 14812 Forbidden: /contracts/6/event_by_contract/
+WARNING 2022-02-24 15:27:06,633 log 20432 14812 Bad Request: /contracts/16/event_by_contract/
+WARNING 2022-02-24 15:38:27,762 log 23944 10260 Unauthorized: /contracts/6/event_by_contract/11/
+WARNING 2022-02-24 15:40:06,450 log 23944 10260 Forbidden: /contracts/6/event_by_contract/13/
+WARNING 2022-02-24 15:40:46,901 log 23944 10260 Forbidden: /contracts/6/event_by_contract/13/
+WARNING 2022-02-24 15:42:17,760 log 23944 10260 Forbidden: /contracts/6/event_by_contract/13/
+WARNING 2022-02-25 15:37:41,990 log 23180 5700 Forbidden: /clients/71/contracts_by_client/
+WARNING 2022-02-25 15:40:00,028 log 23180 5700 Bad Request: /clients/54/contracts_by_client/19/
+WARNING 2022-02-25 15:41:22,236 log 23180 5700 Unauthorized: /contracts/19/event_by_contract/18/
+WARNING 2022-02-25 15:41:29,639 log 23180 5700 Unauthorized: /contracts/19/event_by_contract/18/
+WARNING 2022-02-25 15:46:21,390 log 9304 21820 Forbidden: /contracts/19/event_by_contract/18/
+WARNING 2022-02-25 15:46:49,379 log 9304 21820 Forbidden: /contracts/19/event_by_contract/18/
