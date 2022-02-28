@@ -16,6 +16,12 @@ For the sales and support teams, access will only be via the API endpoints.
 
 The documentation of the endpoints is here <[click](https://documenter.getpostman.com/view/16915168/UVkmRcZd) >(_Made with postman_)
 
+
+## Entity diagram relationship
+___
+
+![EDR](https://github.com/maticha84/oc_p12_repository/blob/master/image/edr.png)
+
 ## Installation
 ___
 At first, you have to install python3 (I use the 3.9.6 version). You can find on the official site Python your version for Windows /Linux/ Mac.
@@ -108,3 +114,4 @@ ___
 |  3. | Search by date of events                  |  GET         |    /events/?date_event=_yyyy-mm-dd_               |
 
 You will find the [Postman documentation here](https://documenter.getpostman.com/view/16915168/UVkmRcZd).
+
